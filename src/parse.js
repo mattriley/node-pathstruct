@@ -1,48 +1,46 @@
 const _ = require('lodash');
 
-const parseKeyValuePairs = (str, { separator = '=' } = {}) => {
-    if (!str.includes(separator)) return {};
+module.exports = (f, opts = {}) => {
+
+    const { initial = {}, select = [], pick = [], separator = '=', cache = {}, ...config } = opts;
+
+    const parseKeyValuePairs = str => {
+        if (!str.includes(separator)) return {};
 
 
-    const matches = str.matchAll(/(?<key>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g);
-    // should I add ' as a valid char 
-    // star between quotes to allow empty string (to allow delete)
-    const matches1 = [...matches];
+        const matches = str.matchAll(/(?<key>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g);
+        // should I add ' as a valid char 
+        // star between quotes to allow empty string (to allow delete)
+        const matches1 = [...matches];
 
 
-    const res1 = matches1.reduce((acc, m) => {
-        const val = m.groups.val.replaceAll('"', '');
-        return _.set(acc, m.groups.key, val);
-    }, {});
+        const res1 = matches1.reduce((acc, m) => {
+            const val = m.groups.val.replaceAll('"', '');
+            return _.set(acc, m.groups.key, val);
+        }, {});
 
 
-    const arrMatches = str.matchAll(/(?<key>\S+)=(?<val>\[[^\]]*\])/g);
-    const arrMatches1 = [...arrMatches].filter(s => s.length > 0);
+        const arrMatches = str.matchAll(/(?<key>\S+)=(?<val>\[[^\]]*\])/g);
+        const arrMatches1 = [...arrMatches].filter(s => s.length > 0);
 
 
-    const res2 = arrMatches1.reduce((acc, m) => {
-        const val = m.groups.val.split(',').map(val => val.replaceAll('[', '').replaceAll(']', '').trim());
-        return _.set(acc, m.groups.key, val);
-    }, {});
+        const res2 = arrMatches1.reduce((acc, m) => {
+            const val = m.groups.val.split(',').map(val => val.replaceAll('[', '').replaceAll(']', '').trim());
+            return _.set(acc, m.groups.key, val);
+        }, {});
 
 
-    const fin = _.merge({}, res1, res2);
+        const fin = _.merge({}, res1, res2);
 
 
-    return fin;
+        return fin;
 
 
-};
+    };
 
-const cache = {};
 
-module.exports = (f, { initial = {}, select = [], pick = [], ...config } = {}) => {
 
-    const current = initial;
-
-    const parseArr = arr => arr.filter(Boolean).map(s => {
-        return parseKeyValuePairs(s);
-    });
+    const parseArr = arr => arr.filter(Boolean).map(parseKeyValuePairs);
 
 
 
@@ -82,9 +80,9 @@ module.exports = (f, { initial = {}, select = [], pick = [], ...config } = {}) =
     if (selected === '') return config.default;
 
 
-    if (_.isPlainObject(current)) {
+    if (_.isPlainObject(initial)) {
         if (!selected) selected = {};
-        _.defaultsDeep(selected, current); // ok
+        _.defaultsDeep(selected, initial); // ok
     }
 
     // const pickKeys = pick ?? [];
@@ -109,7 +107,7 @@ module.exports = (f, { initial = {}, select = [], pick = [], ...config } = {}) =
     }
 
     if (!selected && !Object.keys(masterObj).includes(select)) {
-        return current || config.default;
+        return initial || config.default;
     }
 
 
