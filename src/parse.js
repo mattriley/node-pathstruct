@@ -86,13 +86,21 @@ module.exports = (f, { current = {}, select = [], pick = [], ...config } = {}) =
         _.defaultsDeep(selected, current); // ok
     }
 
-    const pickKeys = pick ?? [];
-    const picks = _.pick(masterObj, pickKeys);
+    // const pickKeys = pick ?? [];
+    // const picks = _.pick(masterObj, pickKeys);
 
-    if (pickKeys.length) {
-        if (!selected) selected = {};
-        _.merge(selected, picks);
-    }
+    // if (pickKeys.length) {
+    //     if (!selected) selected = {};
+    //     _.merge(selected, picks);
+    // }
+
+    // const pickKeys = pick ?? [];
+    const picks = pick.length ? _.pick(masterObj, pick) : { ...masterObj };
+
+    // if (pick.length) {
+    if (!selected) selected = {};
+    _.merge(selected, picks);
+    // }
 
 
     if (Array.isArray(selected)) {
