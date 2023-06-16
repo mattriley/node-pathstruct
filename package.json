@@ -35,6 +35,6 @@
         "eslint-plugin-import": "^2.27.5",
         "husky": "^8.0.3",
         "npm-check-updates": "^16.10.12",
-        "task-library": "^0.220.0"
+        "task-library": "^0.222.0"
     }
 }
