@@ -36,8 +36,9 @@ const parseKeyValuePairs = (str, { separator = '=' } = {}) => {
 
 const cache = {};
 
-module.exports = (f, { current = {}, select = [], pick = [], ...config } = {}) => {
+module.exports = (f, { initial = {}, select = [], pick = [], ...config } = {}) => {
 
+    const current = initial;
 
     const parseArr = arr => arr.filter(Boolean).map(s => {
         return parseKeyValuePairs(s);
