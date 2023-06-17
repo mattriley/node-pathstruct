@@ -96,6 +96,14 @@ test('string value is literal false', () => {
 });
 
 
+test('empty array', () => {
+    // This doesn't seem correct to me
+    const struct = parse('foo=[]', { select: 'foo' });
+    assert.deepEqual(struct, ['']);
+});
+
+
+
 // test('selecting an object', () => {
 //     const struct = parse('x.foo=bar y.baz=qux', { select: ['x'] });
 //     // console.warn(struct);

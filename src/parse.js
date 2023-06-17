@@ -87,6 +87,11 @@ module.exports = (f, opts = {}) => {
     // let selected = select ? _.get(masterObj, select) : { ...masterObj };
 
     let selected = select ? _.get(masterObj, select) : { ...masterObj };
+
+    if (!_.isPlainObject(selected) && pick.length) {
+        throw new Error('Cannot pick from non-object');
+    }
+
     selected = pick.length ? _.pick(selected, pick) : selected;
 
 
