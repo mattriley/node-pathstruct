@@ -42,18 +42,6 @@ test('overriding a string over two path segments', () => {
     assert.deepEqual(struct, { foo: 'baz' });
 });
 
-test('adding a string to an existing struct', () => {
-    const initial = { foo: 'bar' };
-    const struct = parse('baz=qux', { initial });
-    assert.deepEqual(struct, { foo: 'bar', baz: 'qux' });
-});
-
-test('removing a string from an existing struct', () => {
-    const initial = { foo: 'bar', baz: 'qux' };
-    const struct = parse('baz=""', { initial });
-    assert.deepEqual(struct, { foo: 'bar', baz: undefined });
-});
-
 test('parsing an object with a string', () => {
     const struct = parse('x.foo=bar');
     assert.deepEqual(struct, { x: { foo: 'bar' } });

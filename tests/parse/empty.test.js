@@ -12,7 +12,7 @@ test('empty array', () => {
     assert.deepEqual(struct, { foo: undefined, baz: 'qux' });
 });
 
-test('empty array 2', () => {
+test('empty values in array', () => {
     const struct = parse('foo=[,,] baz=qux');
     assert.deepEqual(struct, { foo: undefined, baz: 'qux' });
 });
