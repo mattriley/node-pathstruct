@@ -22,8 +22,6 @@ test('selecting a string', () => {
     assert.deepEqual(struct, 'bar');
 });
 
-
-
 test('parsing quoted string with spaces', () => {
     const struct = parse('foo="bar bar"');
     assert.deepEqual(struct, { foo: 'bar bar' });
@@ -91,10 +89,6 @@ test('string value is literal false', () => {
     const struct = parse('foo=false', { select: 'foo' });
     assert.equal(struct, false);
 });
-
-
-
-
 
 // test('selecting an object', () => {
 //     const struct = parse('x.foo=bar y.baz=qux', { select: ['x'] });

@@ -160,8 +160,11 @@ module.exports = (f, opts = {}) => {
     };
 
 
-
-    const transformValues = obj => _.mapValues(obj, transformValue);
+    const transformValues = obj => {
+        const res = _.mapValues(obj, transformValue);
+        const empty = _.isEmpty(res) || Object.values(res).every(v => v === undefined);
+        return empty ? undefined : res;
+    };
 
 
 
