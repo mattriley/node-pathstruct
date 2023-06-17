@@ -42,7 +42,7 @@ test('parsing an array of string containing spaces', () => {
     assert.deepEqual(struct, { foo: ['bar bar', 'baz baz'] });
 });
 
-test('overriding a string', () => {
+test('overriding a string over two path segments', () => {
     const struct = parse('foo=bar/foo=baz');
     assert.deepEqual(struct, { foo: 'baz' });
 });
@@ -58,3 +58,29 @@ test('removing a string from an existing struct', () => {
     const struct = parse('baz=""', { initial });
     assert.deepEqual(struct, { foo: 'bar', baz: undefined });
 });
+
+test('parsing an object with a string', () => {
+    const struct = parse('x.foo=bar');
+    assert.deepEqual(struct, { x: { foo: 'bar' } });
+});
+
+test('parsing an object with an array', () => {
+    const struct = parse('x.foo=[bar,baz]');
+    assert.deepEqual(struct, { x: { foo: ['bar', 'baz'] } });
+});
+
+test('parsing an object over two path segments', () => {
+    const struct = parse('x.foo=bar/x.baz=qux');
+    assert.deepEqual(struct, { x: { foo: 'bar', baz: 'qux' } });
+});
+
+test('overriding an object over two path segments', () => {
+    const struct = parse('x.foo=bar/x.foo=baz');
+    assert.deepEqual(struct, { x: { foo: 'baz' } });
+});
+
+// test('selecting an object', () => {
+//     const struct = parse('x.foo=bar', { select: 'x' });
+//     console.warn(struct)
+//     assert.deepEqual(struct, { foo: 'bar' });
+// });
