@@ -6,6 +6,15 @@ module.exports = (f, opts = {}) => {
 
     let { initial = {}, select = null, pick = [], pathSep = '/', separator = '=', cache = {}, ...config } = opts;
 
+    const parseValues = str => {
+        const matches = str.matchAll(/(?<key>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g);
+        // should I add ' as a valid char 
+        // star between quotes to allow empty string (to allow delete)
+        return [...matches].reduce((acc, m) => {
+            const val = m.groups.val.replaceAll('"', '');
+            return _.set(acc, m.groups.key, val);
+        }, {});
+    };
 
     const parseArrays = str => {
         const matches = str.matchAll(/(?<key>\S+)=(?<val>\[[^\]]*\])/g);
@@ -16,26 +25,10 @@ module.exports = (f, opts = {}) => {
     };
 
     const parseKeyValuePairs = str => {
-        if (!str.includes(separator)) return {};
-
-
-        const matches = str.matchAll(/(?<key>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g);
-        // should I add ' as a valid char 
-        // star between quotes to allow empty string (to allow delete)
-        const matches1 = [...matches];
-
-        const res1 = matches1.reduce((acc, m) => {
-            const val = m.groups.val.replaceAll('"', '');
-            return _.set(acc, m.groups.key, val);
-        }, {});
-
-        const res2 = parseArrays(str);
-        const fin = _.merge({}, res1, res2);
-        return fin;
-
+        const parsers = str.includes(separator) ? [parseValues, parseArrays] : [];
+        const results = parsers.flatMap(p => p(str));
+        return _.merge({}, ...results);
     };
-
-
 
     const getMasterObj = () => {
         if (cache[f]) return cache[f];
