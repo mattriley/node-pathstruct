@@ -102,33 +102,6 @@ module.exports = (f, opts = {}) => {
         _.defaultsDeep(selected, initial); // ok
     }
 
-    // const pickKeys = pick ?? [];
-    // const picks = _.pick(masterObj, pickKeys);
-
-    // if (pickKeys.length) {
-    //     if (!selected) selected = {};
-    //     _.merge(selected, picks);
-    // }
-
-    // const pickKeys = pick ?? [];
-
-
-
-    pick = select ?? pick;
-    const picks = pick.length ? _.pick(masterObj, pick) : { ...masterObj };
-
-    console.warn(picks); // correct
-
-    //console.warn(selected); // not ok > 
-
-    // if (pick.length) {
-    if (!selected) selected = {};
-    _.merge(selected, picks);
-    // }
-
-    // console.warn(picks);
-
-
 
     if (Array.isArray(selected)) {
         return selected.length ? selected : config.default; // works now for arrays
