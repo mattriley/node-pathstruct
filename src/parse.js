@@ -2,7 +2,9 @@ const _ = require('lodash');
 
 module.exports = (f, opts = {}) => {
 
-    let { initial = {}, select = [], pick = [], separator = '=', cache = {}, ...config } = opts;
+    opts.pick = [opts.pick ?? []].flat(); // coerce `pick` into an array 
+
+    let { initial = {}, select = null, pick = [], separator = '=', cache = {}, ...config } = opts;
 
     const parseKeyValuePairs = str => {
         if (!str.includes(separator)) return {};
@@ -82,7 +84,10 @@ module.exports = (f, opts = {}) => {
     // console.warn(masterObj); // ok
 
 
-    let selected = _.get(masterObj, select); // ok
+    // let selected = select ? _.get(masterObj, select) : { ...masterObj };
+
+    let selected = select ? _.get(masterObj, select) : { ...masterObj };
+    selected = pick.length ? _.pick(selected, pick) : selected;
 
 
 
@@ -109,12 +114,12 @@ module.exports = (f, opts = {}) => {
 
 
 
-    pick = select.length ? select : pick;
+    pick = select ?? pick;
     const picks = pick.length ? _.pick(masterObj, pick) : { ...masterObj };
 
-    // console.warn(picks); // correct
+    console.warn(picks); // correct
 
-    console.warn(selected); // not ok > { foo: 'bar' }
+    //console.warn(selected); // not ok > 
 
     // if (pick.length) {
     if (!selected) selected = {};
