@@ -76,31 +76,30 @@ module.exports = (f, opts = {}) => {
     }
 
 
-    const transformValue = v => {
+    const transformValue = val => {
         // must be undefined (null prob ok)
         // if omitting, it will be reassigned by mergeMetadata.js
         // because it's simply not there.
-        if (v === '') return undefined;
-        if (v === null) return undefined;
-
-        if (Array.isArray(v)) {
-            const arr = v.map(transformValue).filter(v => v !== undefined);
-            return arr.length ? arr : undefined;
-        }
-
-        if (v === 'false') return false;
-        if (v === 'true') return true;
-        if (_.isPlainObject(v)) return transformValues(v);
-        return v;
+        if (val === '') return undefined;
+        if (val === null) return undefined;
+        if (val === 'false') return false;
+        if (val === 'true') return true;
+        if (Array.isArray(val)) return transformArray(val);
+        if (_.isPlainObject(val)) return transformObject(val);
+        return val;
     };
 
-    const transformValues = obj => {
+    const transformArray = arr => {
+        const res = arr.map(transformValue).filter(v => v !== undefined);
+        return res.length ? res : undefined;
+    };
+
+    const transformObject = obj => {
         const res = _.mapValues(obj, transformValue);
         const empty = _.isEmpty(res) || Object.values(res).every(v => v === undefined);
         return empty ? undefined : res;
     };
 
-    const transform = _.isPlainObject(selected) ? transformValues : transformValue;
-    return transform(selected);
+    return transformValue(selected);
 
 };
