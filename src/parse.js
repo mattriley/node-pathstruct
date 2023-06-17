@@ -30,12 +30,12 @@ module.exports = (f, opts = {}) => {
         const arrMatches1 = [...arrMatches].filter(s => s.length > 0);
 
 
+
         const res2 = arrMatches1.reduce((acc, m) => {
-            const val = m.groups.val.split(',').map(val => val.replaceAll('[', '').replaceAll(']', '').trim());
+            let val = m.groups.val.split(',').map(val => val.replaceAll('[', '').replaceAll(']', '').trim());
+            if (val == '') val = undefined; // this is new to match behavior of empty string, previously returned ['']
             return _.set(acc, m.groups.key, val);
         }, {});
-
-
 
 
         const fin = _.merge({}, res1, res2);
@@ -95,7 +95,7 @@ module.exports = (f, opts = {}) => {
     selected = pick.length ? _.pick(selected, pick) : selected;
 
 
-
+    // console.warn(config.default)
     if (Array.isArray(selected) && !selected.length) return config.default;
 
 
