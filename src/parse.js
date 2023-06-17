@@ -101,6 +101,8 @@ module.exports = (f, opts = {}) => {
 
     if (selected === '') return config.default;
 
+    // console.warn(selected)
+
 
     if (_.isPlainObject(initial)) {
         if (!selected) selected = {};
@@ -143,25 +145,29 @@ module.exports = (f, opts = {}) => {
 
     // if an object:
 
+
+    const transformValue = v => {
+        // must be undefined (null prob ok)
+        // if omitting, it will be reassigned by mergeMetadata.js
+        // because it's simply not there.
+        if (v === '') return undefined;
+        if (v === null) return undefined;
+        if (Array.isArray(v) && v.length === 0) return undefined;
+        if (v === 'false') return false;
+        if (v === 'true') return true;
+        if (_.isPlainObject(v)) return transformValues(v);
+        return v;
+    };
+
+
+
+    const transformValues = obj => _.mapValues(obj, transformValue);
+
+
+
     try {
 
-        const emptyRemoved = Object.keys(selected).reduce((acc, k) => {
-
-
-            let v = selected[k];
-
-            if (v === 'false') v = false;
-            if (v === 'true') v = true;
-
-            if (Array.isArray(v) && !v.length) v = undefined;
-
-            if (!v || v === '') v = undefined;
-            // must be undefined (null prob ok)
-            // if omitting, it will be reassigned by mergeMetadata.js
-            // because it's simply not there.
-
-            return { ...acc, [k]: v };
-        }, {});
+        const emptyRemoved = transformValues(selected);
 
         if (_.isEmpty(emptyRemoved)) return undefined; // here
 

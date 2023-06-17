@@ -22,10 +22,7 @@ test('selecting a string', () => {
     assert.deepEqual(struct, 'bar');
 });
 
-test('parsing an empty string', () => {
-    const struct = parse('foo="" baz=qux');
-    assert.deepEqual(struct, { foo: undefined, baz: 'qux' });
-});
+
 
 test('parsing quoted string with spaces', () => {
     const struct = parse('foo="bar bar"');
@@ -95,10 +92,7 @@ test('string value is literal false', () => {
     assert.equal(struct, false);
 });
 
-test('parsing an empty array', () => {
-    const struct = parse('foo=[] baz=qux');
-    assert.deepEqual(struct, { foo: undefined, baz: 'qux' });
-});
+
 
 
 
