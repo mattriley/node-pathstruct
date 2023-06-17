@@ -12,6 +12,11 @@ test('empty array', () => {
     assert.deepEqual(struct, { foo: undefined, baz: 'qux' });
 });
 
+test('empty array 2', () => {
+    const struct = parse('foo=[,,] baz=qux');
+    assert.deepEqual(struct, { foo: undefined, baz: 'qux' });
+});
+
 test('empty string on an object', () => {
     const struct = parse('x.foo="" x.baz=qux');
     assert.deepEqual(struct, { x: { foo: undefined, baz: 'qux' } });
