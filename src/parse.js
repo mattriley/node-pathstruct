@@ -166,19 +166,6 @@ module.exports = (f, opts = {}) => {
         return empty ? undefined : res;
     };
 
+    return transformValues(selected);
 
-
-    try {
-
-        const emptyRemoved = transformValues(selected);
-
-        if (_.isEmpty(emptyRemoved)) return undefined; // here
-
-        const allUndefined = Object.values(emptyRemoved).every(val => val === undefined);
-        if (allUndefined) return undefined;
-
-        return emptyRemoved;
-    } catch (err) {
-        console.error(err);
-    }
 };
