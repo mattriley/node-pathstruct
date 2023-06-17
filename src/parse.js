@@ -2,7 +2,7 @@ const _ = require('lodash');
 
 module.exports = (f, opts = {}) => {
 
-    const { initial = {}, select = [], pick = [], separator = '=', cache = {}, ...config } = opts;
+    let { initial = {}, select = [], pick = [], separator = '=', cache = {}, ...config } = opts;
 
     const parseKeyValuePairs = str => {
         if (!str.includes(separator)) return {};
@@ -13,11 +13,15 @@ module.exports = (f, opts = {}) => {
         // star between quotes to allow empty string (to allow delete)
         const matches1 = [...matches];
 
+        // console.warn(1, matches1); // ok
+
 
         const res1 = matches1.reduce((acc, m) => {
             const val = m.groups.val.replaceAll('"', '');
             return _.set(acc, m.groups.key, val);
         }, {});
+
+        // console.warn(2, res1); // ok
 
 
         const arrMatches = str.matchAll(/(?<key>\S+)=(?<val>\[[^\]]*\])/g);
@@ -30,7 +34,11 @@ module.exports = (f, opts = {}) => {
         }, {});
 
 
+
+
         const fin = _.merge({}, res1, res2);
+
+        // console.warn(2, fin); // ok
 
 
         return fin;
@@ -58,11 +66,11 @@ module.exports = (f, opts = {}) => {
 
         const entries = parseArr(arr);
 
-        // console.warn(entries);
+
 
 
         const masterObj = _.merge({}, ...entries); // ??
-
+        // console.warn(masterObj);
 
         cache[targetPath] = masterObj;
         return cache[targetPath];
@@ -71,8 +79,12 @@ module.exports = (f, opts = {}) => {
 
     const masterObj = getMasterObj();
 
+    // console.warn(masterObj); // ok
+
 
     let selected = _.get(masterObj, select); // ok
+
+
 
     if (Array.isArray(selected) && !selected.length) return config.default;
 
@@ -94,12 +106,23 @@ module.exports = (f, opts = {}) => {
     // }
 
     // const pickKeys = pick ?? [];
+
+
+
+    pick = select.length ? select : pick;
     const picks = pick.length ? _.pick(masterObj, pick) : { ...masterObj };
+
+    // console.warn(picks); // correct
+
+    console.warn(selected); // not ok > { foo: 'bar' }
 
     // if (pick.length) {
     if (!selected) selected = {};
     _.merge(selected, picks);
     // }
+
+    // console.warn(picks);
+
 
 
     if (Array.isArray(selected)) {

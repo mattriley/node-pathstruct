@@ -79,8 +79,13 @@ test('overriding an object over two path segments', () => {
     assert.deepEqual(struct, { x: { foo: 'baz' } });
 });
 
+test('picking an object', () => {
+    const struct = parse('x.foo=bar', { pick: ['x'] });
+    assert.deepEqual(struct, { x: { foo: 'bar' } });
+});
+
 // test('selecting an object', () => {
-//     const struct = parse('x.foo=bar', { select: 'x' });
-//     console.warn(struct)
+//     const struct = parse('x.foo=bar y.baz=qux', { select: ['x'] });
+//     // console.warn(struct);
 //     assert.deepEqual(struct, { foo: 'bar' });
 // });
