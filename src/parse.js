@@ -93,16 +93,6 @@ module.exports = (f, opts = {}) => {
     }
 
 
-    if (!_.isObject(selected)) {
-        if (selected === 'false') return false;
-        if (selected === 'true') return true;
-
-
-        return selected ? selected : config.default;
-    }
-
-    // if an object:
-
     const transformValue = v => {
         // must be undefined (null prob ok)
         // if omitting, it will be reassigned by mergeMetadata.js
@@ -116,13 +106,13 @@ module.exports = (f, opts = {}) => {
         return v;
     };
 
-
     const transformValues = obj => {
         const res = _.mapValues(obj, transformValue);
         const empty = _.isEmpty(res) || Object.values(res).every(v => v === undefined);
         return empty ? undefined : res;
     };
 
-    return transformValues(selected);
+    const transform = _.isPlainObject(selected) ? transformValues : transformValue;
+    return transform(selected);
 
 };
