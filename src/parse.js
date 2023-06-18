@@ -6,23 +6,13 @@ module.exports = (f, opts = {}) => {
 
     let { initial = {}, select = null, pick = [], pathSep = '/', separator = '=', cache = {} } = opts;
 
-    if (!_.isPlainObject(initial)) {
-        throw new Error('initial must be a plain object');
-    }
-
-    if (select && typeof select !== 'string') {
-        throw new Error('select must be a string');
-    }
-
+    if (!_.isPlainObject(initial)) throw new Error('initial must be a plain object');
+    if (!Array.isArray(pick)) throw new Error('pick must be an array');
+    if (select && typeof select !== 'string') throw new Error('select must be a string');
 
     const parseValues = str => {
         const matches = str.matchAll(/(?<key>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g);
-        // should I add ' as a valid char 
-        // star between quotes to allow empty string (to allow delete)
-        return [...matches].reduce((acc, m) => {
-            const val = m.groups.val; //.replaceAll('"', '');
-            return _.set(acc, m.groups.key, val);
-        }, {});
+        return [...matches].reduce((acc, m) => _.set(acc, m.groups.key, m.groups.val), {});
     };
 
     const parseArrays = str => {
