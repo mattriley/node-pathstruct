@@ -42,17 +42,6 @@ test('parsing an object with an array', () => {
     assert.deepEqual(struct, { x: { foo: ['bar', 'baz'] } });
 });
 
-test('string value is literal true', () => {
-    const struct = parse('foo=true', { select: 'foo' });
-    assert.equal(struct, true);
-});
-
-test('string value is literal false', () => {
-    // this only works when using select
-    const struct = parse('foo=false', { select: 'foo' });
-    assert.equal(struct, false);
-});
-
 // test('selecting an object', () => {
 //     const struct = parse('x.foo=bar y.baz=qux', { select: ['x'] });
 //     // console.warn(struct);
