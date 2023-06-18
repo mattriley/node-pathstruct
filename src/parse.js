@@ -16,7 +16,7 @@ module.exports = (f, opts = {}) => {
         // should I add ' as a valid char 
         // star between quotes to allow empty string (to allow delete)
         return [...matches].reduce((acc, m) => {
-            const val = m.groups.val.replaceAll('"', '');
+            const val = m.groups.val; //.replaceAll('"', '');
             return _.set(acc, m.groups.key, val);
         }, {});
     };
@@ -87,13 +87,15 @@ module.exports = (f, opts = {}) => {
         // must be undefined (null prob ok)
         // if omitting, it will be reassigned by mergeMetadata.js
         // because it's simply not there.
+        if (val === '""') return undefined;
         if (val === '') return undefined;
         if (val === null) return undefined;
         if (val === 'false') return false;
         if (val === 'true') return true;
         if (Array.isArray(val)) return transformArray(val);
         if (_.isPlainObject(val)) return transformObject(val);
-        return val;
+        // return val;
+        return val.replaceAll('"', '');
     };
 
     const transformArray = arr => {
