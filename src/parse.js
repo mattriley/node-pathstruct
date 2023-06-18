@@ -6,6 +6,11 @@ module.exports = (f, opts = {}) => {
 
     let { initial = {}, select = null, pick = [], pathSep = '/', separator = '=', cache = {} } = opts;
 
+    if (!_.isPlainObject(initial)) {
+        throw new Error('initial must be a plain object');
+    }
+
+
     const parseValues = str => {
         const matches = str.matchAll(/(?<key>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g);
         // should I add ' as a valid char 
@@ -48,7 +53,7 @@ module.exports = (f, opts = {}) => {
     const current = select ? _.get(initial, select) : { ...initial };
     let target = select ? _.get(masterObj, select) : { ...masterObj };
 
-    if (_.isPlainObject(initial)) {
+    if (_.isPlainObject(target) && _.isPlainObject(current)) {
         _.defaultsDeep(target, current); // ok
     }
 
