@@ -43,15 +43,17 @@ module.exports = (f, opts = {}) => {
         return cache[f];
     };
 
-    const masterObj = getMasterObj();
+    const master = getMasterObj();
 
     // if (_.isPlainObject(initial)) {
     //     if (!target) target = {};
     //     _.defaultsDeep(target, initial); // ok
     // }
 
-    const current = select ? _.get(initial, select) : { ...initial };
-    let target = select ? _.get(masterObj, select) : { ...masterObj };
+
+
+    const current = select ? _.get(initial, select, {}) : initial;
+    let target = select ? _.get(master, select, {}) : master;
 
     if (_.isPlainObject(target) && _.isPlainObject(current)) {
         _.defaultsDeep(target, current); // ok
