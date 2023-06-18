@@ -78,17 +78,15 @@ module.exports = (f, opts = {}) => {
 
 
     const transformValue = val => {
-        // must be undefined (null prob ok)
-        // if omitting, it will be reassigned by mergeMetadata.js
-        // because it's simply not there.
-        if (val === '""') return undefined;
-        if (val === '') return undefined;
-        if (val === null) return undefined;
+        if (_.isPlainObject(val)) return transformObject(val);
+        if (Array.isArray(val)) return transformArray(val);
+
+        const nils = ['nil', 'null', '""', ''];
+        if (nils.some(nil => val === nil)) return undefined;
+
         if (val === 'false') return false;
         if (val === 'true') return true;
-        if (Array.isArray(val)) return transformArray(val);
-        if (_.isPlainObject(val)) return transformObject(val);
-        // return val;
+
         return val.replaceAll('"', '');
     };
 
