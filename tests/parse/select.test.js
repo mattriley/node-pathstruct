@@ -7,11 +7,10 @@ test('selecting a string', () => {
     assert.deepEqual(struct, 'bar');
 });
 
-// test('selecting an object', () => {
-//     const struct = parse('x.foo=bar y.baz=qux', { select: ['x'] });
-//     // console.warn(struct);
-//     assert.deepEqual(struct, { foo: 'bar' });
-// });
+test('selecting an object', () => {
+    const struct = parse('x.foo=bar y.baz=qux', { select: ['x'] });
+    assert.deepEqual(struct, { foo: 'bar' });
+});
 
 // test('parsing an object into existing object', () => {
 //     const initial = { x: { foo: 'bar' } };
