@@ -12,8 +12,8 @@ test('selecting an object', () => {
     assert.deepEqual(struct, { foo: 'bar' });
 });
 
-// test('parsing an object into existing object', () => {
-//     const initial = { x: { foo: 'bar' } };
-//     const struct = parse('x.baz=qux', { initial, select: 'x' });
-//     assert.deepEqual(struct, { foo: 'bar', baz: 'qux' });
-// });
+test('parsing an object into existing object', () => {
+    const initial = { x: { foo: 'bar' } };
+    const struct = parse('x.baz=qux', { initial, select: 'x' });
+    assert.deepEqual(struct, { foo: 'bar', baz: 'qux' });
+});

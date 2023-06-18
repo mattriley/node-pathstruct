@@ -40,7 +40,17 @@ module.exports = (f, opts = {}) => {
 
     const masterObj = getMasterObj();
 
+    // if (_.isPlainObject(initial)) {
+    //     if (!target) target = {};
+    //     _.defaultsDeep(target, initial); // ok
+    // }
+
+    const current = select ? _.get(initial, select) : { ...initial };
     let target = select ? _.get(masterObj, select) : { ...masterObj };
+
+    if (_.isPlainObject(initial)) {
+        _.defaultsDeep(target, current); // ok
+    }
 
     if (!_.isPlainObject(target) && pick.length) {
         throw new Error('Cannot pick from non-object');
@@ -54,19 +64,16 @@ module.exports = (f, opts = {}) => {
 
 
 
-    if (_.isPlainObject(initial)) {
-        if (!target) target = {};
-        _.defaultsDeep(target, initial); // ok
-    }
+
 
     // assuming unused
     // if (Array.isArray(selected)) {
     //     return selected.length ? selected : config.default; // works now for arrays
     // }
 
-    if (!target && !Object.keys(masterObj).includes(select)) {
-        return initial || config.default;
-    }
+    // if (!target && !Object.keys(master).includes(select)) {
+    //     return initial || config.default;
+    // }
 
 
     const transformValue = val => {
