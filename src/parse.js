@@ -39,13 +39,6 @@ module.exports = (f, opts = {}) => {
 
     const master = getMasterObj();
 
-    // if (_.isPlainObject(initial)) {
-    //     if (!target) target = {};
-    //     _.defaultsDeep(target, initial); // ok
-    // }
-
-
-
     const current = select ? _.get(initial, select, {}) : initial;
     let target = select ? _.get(master, select, {}) : master;
 
@@ -58,24 +51,6 @@ module.exports = (f, opts = {}) => {
     }
 
     target = pick.length ? _.pick(target, pick) : target;
-
-    // assuming unused
-    // if (Array.isArray(selected) && !selected.length) return config.default;
-    // if (selected === '') return config.default;
-
-
-
-
-
-    // assuming unused
-    // if (Array.isArray(selected)) {
-    //     return selected.length ? selected : config.default; // works now for arrays
-    // }
-
-    // if (!target && !Object.keys(master).includes(select)) {
-    //     return initial || config.default;
-    // }
-
 
     const transformValue = val => {
         if (_.isPlainObject(val)) return transformObject(val);
