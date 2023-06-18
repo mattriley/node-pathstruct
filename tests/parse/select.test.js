@@ -8,7 +8,7 @@ test('selecting a string', () => {
 });
 
 test('selecting an object', () => {
-    const struct = parse('x.foo=bar y.baz=qux', { select: ['x'] });
+    const struct = parse('x.foo=bar y.baz=qux', { select: 'x' });
     assert.deepEqual(struct, { foo: 'bar' });
 });
 

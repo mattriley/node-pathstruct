@@ -10,6 +10,10 @@ module.exports = (f, opts = {}) => {
         throw new Error('initial must be a plain object');
     }
 
+    if (select && typeof select !== 'string') {
+        throw new Error('select must be a string');
+    }
+
 
     const parseValues = str => {
         const matches = str.matchAll(/(?<key>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g);
