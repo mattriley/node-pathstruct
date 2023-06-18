@@ -40,13 +40,13 @@ module.exports = (f, opts = {}) => {
 
     const masterObj = getMasterObj();
 
-    let selected = select ? _.get(masterObj, select) : { ...masterObj };
+    let target = select ? _.get(masterObj, select) : { ...masterObj };
 
-    if (!_.isPlainObject(selected) && pick.length) {
+    if (!_.isPlainObject(target) && pick.length) {
         throw new Error('Cannot pick from non-object');
     }
 
-    selected = pick.length ? _.pick(selected, pick) : selected;
+    target = pick.length ? _.pick(target, pick) : target;
 
     // assuming unused
     // if (Array.isArray(selected) && !selected.length) return config.default;
@@ -55,8 +55,8 @@ module.exports = (f, opts = {}) => {
 
 
     if (_.isPlainObject(initial)) {
-        if (!selected) selected = {};
-        _.defaultsDeep(selected, initial); // ok
+        if (!target) target = {};
+        _.defaultsDeep(target, initial); // ok
     }
 
     // assuming unused
@@ -64,7 +64,7 @@ module.exports = (f, opts = {}) => {
     //     return selected.length ? selected : config.default; // works now for arrays
     // }
 
-    if (!selected && !Object.keys(masterObj).includes(select)) {
+    if (!target && !Object.keys(masterObj).includes(select)) {
         return initial || config.default;
     }
 
@@ -93,6 +93,6 @@ module.exports = (f, opts = {}) => {
         return empty ? undefined : res;
     };
 
-    return transformValue(selected);
+    return transformValue(target);
 
 };
