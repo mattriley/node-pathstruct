@@ -4,7 +4,7 @@ module.exports = (f, opts = {}) => {
 
     opts.pick = [opts.pick ?? []].flat(); // coerce `pick` into an array 
 
-    let { initial = {}, select = null, pick = [], pathSep = '/', separator = '=', cache = {}, ...config } = opts;
+    let { initial = {}, select = null, pick = [], pathSep = '/', separator = '=', cache = {} } = opts;
 
     const parseValues = str => {
         const matches = str.matchAll(/(?<key>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g);
