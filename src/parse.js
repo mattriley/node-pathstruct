@@ -7,22 +7,33 @@ module.exports = (f, opts = {}) => {
 
     opts.pick = [opts.pick ?? []].flat(); // coerce `pick` into an array 
 
-    let { initial = {}, select = null, pick = [], pathSep = '/', separator = '=', cache = {} } = opts;
+    let { initial = {}, select = null, pick = [], pathSep = '/', separator = '=', cache = {}, arrayDelimiter = ',' } = opts;
 
     if (!_.isPlainObject(initial)) throw new Error('initial must be a plain object');
     if (!Array.isArray(pick)) throw new Error('pick must be an array');
     if (select && typeof select !== 'string') throw new Error('select must be a string');
 
-    const parseValues = str => {
+    const matchValues = str => {
         const matches = str.matchAll(/(?<key>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g);
-        return [...matches].reduce((acc, m) => _.set(acc, m.groups.key, m.groups.val), {});
+        return [...matches];
+    };
+
+    const parseValues = str => {
+        return matchValues(str).reduce((acc, m) => {
+            const { key, val } = m.groups;
+            return _.set(acc, key, val);
+        }, {});
+    };
+
+    const matchArrays = str => {
+        const matches = str.matchAll(/(?<key>\S+)=(?<val>\[[^\]]*\])/g);
+        return [...matches];
     };
 
     const parseArrays = str => {
-        const matches = str.matchAll(/(?<key>\S+)=(?<val>\[[^\]]*\])/g);
-        return [...matches].reduce((acc, m) => {
+        return matchArrays(str).reduce((acc, m) => {
             const { key, val } = m.groups;
-            const arr = removeSurroundingSquareBrackets(val).split(',');
+            const arr = removeSurroundingSquareBrackets(val).split(arrayDelimiter);
             return _.set(acc, key, arr);
         }, {});
     };
