@@ -38,19 +38,18 @@ module.exports = (f, opts = {}) => {
     };
 
     const master = getMasterObj();
-
     const current = select ? _.get(initial, select, {}) : initial;
-    let target = select ? _.get(master, select, {}) : master;
+    const targetSelected = select ? _.get(master, select, {}) : master;
 
-    if (_.isPlainObject(target) && _.isPlainObject(current)) {
-        _.defaultsDeep(target, current); // ok
+    if (_.isPlainObject(targetSelected) && _.isPlainObject(current)) {
+        _.defaultsDeep(targetSelected, current); // TODO: Prevent mutation
     }
 
-    if (!_.isPlainObject(target) && pick.length) {
+    if (!_.isPlainObject(targetSelected) && pick.length) {
         throw new Error('Cannot pick from non-object');
     }
 
-    target = pick.length ? _.pick(target, pick) : target;
+    const targetPicked = pick.length ? _.pick(targetSelected, pick) : targetSelected;
 
     const transformValue = val => {
         if (_.isPlainObject(val)) return transformObject(val);
@@ -76,6 +75,6 @@ module.exports = (f, opts = {}) => {
         return empty ? undefined : res;
     };
 
-    return transformValue(target);
+    return transformValue(targetPicked);
 
 };
