@@ -1,5 +1,8 @@
 const _ = require('lodash');
 
+const removeSurroundingDoubleQuotes = str => str.replace(/^"(.*)"$/, '$1');
+const removeSurroundingSquareBrackets = str => str.replace(/^\[(.*)\]$/, '$1');
+
 module.exports = (f, opts = {}) => {
 
     opts.pick = [opts.pick ?? []].flat(); // coerce `pick` into an array 
@@ -18,9 +21,9 @@ module.exports = (f, opts = {}) => {
     const parseArrays = str => {
         const matches = str.matchAll(/(?<key>\S+)=(?<val>\[[^\]]*\])/g);
         return [...matches].reduce((acc, m) => {
-            const csv = m.groups.val.replace(/^\[(.*)\]$/, '$1');
-            const arr = csv.split(',');
-            return _.set(acc, m.groups.key, arr);
+            const { key, val } = m.groups;
+            const arr = removeSurroundingSquareBrackets(val).split(',');
+            return _.set(acc, key, arr);
         }, {});
     };
 
@@ -62,7 +65,7 @@ module.exports = (f, opts = {}) => {
         if (val === 'false') return false;
         if (val === 'true') return true;
 
-        return val.replace(/^"(.*)"$/, '$1');
+        return removeSurroundingDoubleQuotes(val);
     };
 
     const transformArray = arr => {
