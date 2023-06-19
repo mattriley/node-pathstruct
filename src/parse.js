@@ -61,7 +61,7 @@ module.exports = (f, opts = {}) => {
         if (val === 'false') return false;
         if (val === 'true') return true;
 
-        return val.replaceAll('"', '');
+        return val.replace(/^"(.*)"$/, '$1');
     };
 
     const transformArray = arr => {
