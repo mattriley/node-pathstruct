@@ -18,8 +18,9 @@ module.exports = (f, opts = {}) => {
     const parseArrays = str => {
         const matches = str.matchAll(/(?<key>\S+)=(?<val>\[[^\]]*\])/g);
         return [...matches].reduce((acc, m) => {
-            let val = m.groups.val.split(',').map(val => val.replaceAll('[', '').replaceAll(']', '').trim());
-            return _.set(acc, m.groups.key, val);
+            const csv = m.groups.val.replaceAll('[', '').replaceAll(']', '').trim();
+            const arr = csv.split(',');
+            return _.set(acc, m.groups.key, arr);
         }, {});
     };
 
