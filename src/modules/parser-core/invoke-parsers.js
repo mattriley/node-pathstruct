@@ -4,11 +4,10 @@ module.exports = ({ parsers, config }) => str => {
     const parserFuncs = str.includes(config.keyValueSeparator) ? Object.values(parsers) : [];
 
     const arr = str.split(config.pathSeparator);
-    const entries = arr.filter(Boolean).map(seg => {
-        const results = parserFuncs.flatMap(p => p(seg));
-        return _.merge({}, ...results);
-    });
 
-    return _.merge({}, ...entries);
+    return arr.filter(Boolean).reduce((acc, seg) => {
+        const obj = parserFuncs.flatMap(p => p(seg));
+        return _.merge(acc, ...obj);
+    }, {});
 
 };
