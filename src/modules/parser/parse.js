@@ -3,11 +3,19 @@ const _ = require('lodash');
 const removeSurroundingDoubleQuotes = str => str.replace(/^"(.*)"$/, '$1');
 const removeSurroundingSquareBrackets = str => str.replace(/^\[(.*)\]$/, '$1');
 
-module.exports = (f, opts = {}) => {
+module.exports = ({ config }) => (f, opts = {}) => {
 
     opts.pick = [opts.pick ?? []].flat(); // coerce `pick` into an array 
 
-    let { initial = {}, select = null, pick = [], pathSep = '/', separator = '=', cache = {}, arrayDelimiter = ',' } = opts;
+    const {
+        initial = {},
+        select = null,
+        pick = [],
+        cache = {},
+        pathSeparator,
+        keyValueSeparator,
+        arrayDelimiter
+    } = { ...config, ...opts };
 
     if (!_.isPlainObject(initial)) throw new Error('initial must be a plain object');
     if (!Array.isArray(pick)) throw new Error('pick must be an array');
@@ -39,14 +47,14 @@ module.exports = (f, opts = {}) => {
     };
 
     const parseKeyValuePairs = str => {
-        const parsers = str.includes(separator) ? [parseValues, parseArrays] : [];
+        const parsers = str.includes(keyValueSeparator) ? [parseValues, parseArrays] : [];
         const results = parsers.flatMap(p => p(str));
         return _.merge({}, ...results);
     };
 
     const getMasterObj = () => {
         if (cache[f]) return cache[f];
-        const arr = f.split(pathSep);
+        const arr = f.split(pathSeparator);
         const entries = arr.filter(Boolean).map(parseKeyValuePairs);
         cache[f] = _.merge({}, ...entries);
         return cache[f];
