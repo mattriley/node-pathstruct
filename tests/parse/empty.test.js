@@ -23,7 +23,8 @@ module.exports = ({ parse }) => {
         assert.deepEqual(parse(''), undefined);
         assert.deepEqual(parse('foo'), undefined);
         assert.deepEqual(parse('foo/bar'), undefined);
-        assert.deepEqual(parse('foo="" baz=[] x.foo="" x.baz=[]'), undefined);
+        assert.deepEqual(parse('foo="" x.foo=""'), undefined);
+        assert.deepEqual(parse('baz=[] x.foo=[]'), undefined);
     });
 
 };
