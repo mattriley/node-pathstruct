@@ -1,3 +1,4 @@
 module.exports = {
-    parser: require('./parser')
+    parser: require('./parser'),
+    parsers: require('./parsers')
 };

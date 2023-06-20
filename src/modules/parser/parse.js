@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-module.exports = ({ parser, config }) => (f, opts = {}) => {
+module.exports = ({ parser, parsers, config }) => (f, opts = {}) => {
 
     opts.pick = [opts.pick ?? []].flat(); // coerce `pick` into an array 
 
@@ -18,8 +18,8 @@ module.exports = ({ parser, config }) => (f, opts = {}) => {
     if (select && typeof select !== 'string') throw new Error('select must be a string');
 
     const parseKeyValuePairs = str => {
-        const parsers = str.includes(keyValueSeparator) ? [parser.parseValues, parser.parseArrays] : [];
-        const results = parsers.flatMap(p => p(str));
+        const parserFuncs = str.includes(keyValueSeparator) ? Object.values(parsers) : [];
+        const results = parserFuncs.flatMap(p => p(str));
         return _.merge({}, ...results);
     };
 

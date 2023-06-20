@@ -8,7 +8,8 @@ module.exports = ({ config }) => {
     const { configure } = composer(modules);
     const { compose } = configure(defaultConfig, config);
 
-    compose('parser');
+    const { parsers } = compose('parsers');
+    compose('parser', { parsers });
     return compose.end();
 
 };
