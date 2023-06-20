@@ -3,7 +3,7 @@ const _ = require('lodash');
 const removeSurroundingDoubleQuotes = str => str.replace(/^"(.*)"$/, '$1');
 const removeSurroundingSquareBrackets = str => str.replace(/^\[(.*)\]$/, '$1');
 
-module.exports = ({ config }) => (f, opts = {}) => {
+module.exports = ({ parser, config }) => (f, opts = {}) => {
 
     opts.pick = [opts.pick ?? []].flat(); // coerce `pick` into an array 
 
@@ -33,13 +33,8 @@ module.exports = ({ config }) => (f, opts = {}) => {
         }, {});
     };
 
-    const matchArrays = str => {
-        const matches = str.matchAll(/(?<key>\S+)=(?<val>\[[^\]]*\])/g);
-        return [...matches];
-    };
-
     const parseArrays = str => {
-        return matchArrays(str).reduce((acc, m) => {
+        return parser.matchArrays(str).reduce((acc, m) => {
             const { key, val } = m.groups;
             const arr = removeSurroundingSquareBrackets(val).split(arrayDelimiter);
             return _.set(acc, key, arr);
