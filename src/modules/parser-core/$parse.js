@@ -1,4 +1,4 @@
-module.exports = ({ self, parsers, config }) => (f, opts = {}) => {
+module.exports = ({ self, config }) => (f, opts = {}) => {
 
     opts.pick = [opts.pick ?? []].flat(); // coerce `pick` into an array 
 
@@ -15,17 +15,9 @@ module.exports = ({ self, parsers, config }) => (f, opts = {}) => {
     if (!Array.isArray(pick)) throw new Error('pick must be an array');
     if (select && typeof select !== 'string') throw new Error('select must be a string');
 
-    const parseKeyValuePairs = str => {
-        const parserFuncs = str.includes(keyValueSeparator) ? Object.values(parsers) : [];
-        const results = parserFuncs.flatMap(p => p(str));
-        return _.merge({}, ...results);
-    };
-
     const getMasterObj = () => {
         if (cache[f]) return cache[f];
-        const arr = f.split(pathSeparator);
-        const entries = arr.filter(Boolean).map(parseKeyValuePairs);
-        cache[f] = _.merge({}, ...entries);
+        cache[f] = self.invokeParsers(f)
         return cache[f];
     };
 
