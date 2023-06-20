@@ -1,5 +1,3 @@
-const _ = require('lodash');
-
 const matchArrays = str => [...str.matchAll(/(?<key>\S+)=(?<val>\[[^\]]*\])/g)];
 const removeSurroundingSquareBrackets = str => str.replace(/^\[(.*)\]$/, '$1');
 

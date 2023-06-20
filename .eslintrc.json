@@ -13,6 +13,9 @@
         "ecmaVersion": "latest",
         "allowImportExportEverywhere": true
     },
+    "globals": {
+        "_": "readonly"
+    },
     "rules": {
         "indent": [
             "error",

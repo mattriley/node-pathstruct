@@ -1,5 +1,3 @@
-const _ = require('lodash');
-
 const matchScalar = str => [...str.matchAll(/(?<key>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g)];
 
 module.exports = () => str => {
