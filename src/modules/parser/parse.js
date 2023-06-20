@@ -1,8 +1,5 @@
 const _ = require('lodash');
 
-const removeSurroundingDoubleQuotes = str => str.replace(/^"(.*)"$/, '$1');
-const removeSurroundingSquareBrackets = str => str.replace(/^\[(.*)\]$/, '$1');
-
 module.exports = ({ parser, config }) => (f, opts = {}) => {
 
     opts.pick = [opts.pick ?? []].flat(); // coerce `pick` into an array 
@@ -13,23 +10,15 @@ module.exports = ({ parser, config }) => (f, opts = {}) => {
         pick = [],
         cache = {},
         pathSeparator,
-        keyValueSeparator,
-        arrayDelimiter
+        keyValueSeparator
     } = { ...config, ...opts };
 
     if (!_.isPlainObject(initial)) throw new Error('initial must be a plain object');
     if (!Array.isArray(pick)) throw new Error('pick must be an array');
     if (select && typeof select !== 'string') throw new Error('select must be a string');
 
-    const parseValues = str => {
-        return parser.matchValues(str).reduce((acc, m) => {
-            const { key, val } = m.groups;
-            return _.set(acc, key, val);
-        }, {});
-    };
-
     const parseKeyValuePairs = str => {
-        const parsers = str.includes(keyValueSeparator) ? [parseValues, parser.parseArrays] : [];
+        const parsers = str.includes(keyValueSeparator) ? [parser.parseValues, parser.parseArrays] : [];
         const results = parsers.flatMap(p => p(str));
         return _.merge({}, ...results);
     };
