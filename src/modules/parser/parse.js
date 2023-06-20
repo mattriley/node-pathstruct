@@ -33,16 +33,8 @@ module.exports = ({ parser, config }) => (f, opts = {}) => {
         }, {});
     };
 
-    const parseArrays = str => {
-        return parser.matchArrays(str).reduce((acc, m) => {
-            const { key, val } = m.groups;
-            const arr = removeSurroundingSquareBrackets(val).split(arrayDelimiter);
-            return _.set(acc, key, arr);
-        }, {});
-    };
-
     const parseKeyValuePairs = str => {
-        const parsers = str.includes(keyValueSeparator) ? [parseValues, parseArrays] : [];
+        const parsers = str.includes(keyValueSeparator) ? [parseValues, parser.parseArrays] : [];
         const results = parsers.flatMap(p => p(str));
         return _.merge({}, ...results);
     };
