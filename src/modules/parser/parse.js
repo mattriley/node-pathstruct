@@ -61,30 +61,6 @@ module.exports = ({ parser, config }) => (f, opts = {}) => {
 
     const targetPicked = pick.length ? _.pick(targetSelected, pick) : targetSelected;
 
-    const transformValue = val => {
-        if (_.isPlainObject(val)) return transformObject(val);
-        if (Array.isArray(val)) return transformArray(val);
-
-        const nils = ['nil', 'null', '""', ''];
-        if (nils.some(nil => val === nil)) return undefined;
-
-        if (val === 'false') return false;
-        if (val === 'true') return true;
-
-        return removeSurroundingDoubleQuotes(val);
-    };
-
-    const transformArray = arr => {
-        const res = arr.map(transformValue).filter(v => v !== undefined);
-        return res.length ? res : undefined;
-    };
-
-    const transformObject = obj => {
-        const res = _.mapValues(obj, transformValue);
-        const empty = _.isEmpty(res) || Object.values(res).every(v => v === undefined);
-        return empty ? undefined : res;
-    };
-
-    return transformValue(targetPicked);
+    return parser.transformValue(targetPicked);
 
 };
