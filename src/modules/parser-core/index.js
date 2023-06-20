@@ -1,5 +1,5 @@
 module.exports = {
-    parse: require('./parse'),
+    $parse: require('./$parse'),
     transformArray: require('./transform-array'),
     transformObject: require('./transform-object'),
     transformValue: require('./transform-value')

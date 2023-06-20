@@ -1,6 +1,4 @@
-const _ = require('lodash');
-
-module.exports = ({ parser, parsers, config }) => (f, opts = {}) => {
+module.exports = ({ self, parsers, config }) => (f, opts = {}) => {
 
     opts.pick = [opts.pick ?? []].flat(); // coerce `pick` into an array 
 
@@ -45,6 +43,6 @@ module.exports = ({ parser, parsers, config }) => (f, opts = {}) => {
 
     const targetPicked = pick.length ? _.pick(targetSelected, pick) : targetSelected;
 
-    return parser.transformValue(targetPicked);
+    return self.transformValue(targetPicked);
 
 };

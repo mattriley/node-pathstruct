@@ -1,9 +1,9 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-module.exports = ({ parser }) => {
+module.exports = ({ parse }) => {
 
-    const { parse } = parser;
+
 
     test('selecting a string', () => {
         const struct = parse('foo=bar baz=qux', { select: 'foo' });

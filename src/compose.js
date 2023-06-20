@@ -12,7 +12,7 @@ module.exports = ({ config }) => {
     const { compose } = configure(defaultConfig, config);
 
     const { parsers } = compose('parsers');
-    compose('parser', { parsers });
+    compose('parserCore', { parsers });
     return compose.end();
 
 };

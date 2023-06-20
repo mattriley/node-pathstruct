@@ -1,8 +1,6 @@
 const tests = require('./parse');
-const compose = require('../src/compose');
-
-const { modules } = compose({});
+const lib = require('../src/main');
 
 Object.values(tests).forEach(func => {
-    func(modules);
+    func(lib);
 });

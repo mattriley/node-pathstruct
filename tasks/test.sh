@@ -1,3 +1,3 @@
 #!/bin/bash
 
-node ./tests/test-runner.js
+node ./tests/test-runner.js --test --test-reporter=spec
