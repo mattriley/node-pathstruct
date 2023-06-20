@@ -21,13 +21,8 @@ module.exports = ({ parser, config }) => (f, opts = {}) => {
     if (!Array.isArray(pick)) throw new Error('pick must be an array');
     if (select && typeof select !== 'string') throw new Error('select must be a string');
 
-    const matchValues = str => {
-        const matches = str.matchAll(/(?<key>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g);
-        return [...matches];
-    };
-
     const parseValues = str => {
-        return matchValues(str).reduce((acc, m) => {
+        return parser.matchValues(str).reduce((acc, m) => {
             const { key, val } = m.groups;
             return _.set(acc, key, val);
         }, {});
