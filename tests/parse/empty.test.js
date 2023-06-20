@@ -20,6 +20,9 @@ module.exports = ({ parse }) => {
     });
 
     test('empty everything', () => {
+        assert.deepEqual(parse(''), undefined);
+        assert.deepEqual(parse('foo'), undefined);
+        assert.deepEqual(parse('foo/bar'), undefined);
         assert.deepEqual(parse('foo="" baz=[] x.foo="" x.baz=[]'), undefined);
     });
 
