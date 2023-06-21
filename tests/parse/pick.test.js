@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 module.exports = ({ parse }) => {
 
     test('picking one of two strings', () => {
-        const struct = parse('foo=bar baz=qux', { pick: 'foo' });
+        const struct = parse('foo=bar baz=qux', { pick: ['foo'] });
         assert.deepEqual(struct, { foo: 'bar' });
     });
 
@@ -14,7 +14,7 @@ module.exports = ({ parse }) => {
     });
 
     test('cannot pick from non-plain object', () => {
-        const attempt = () => parse('foo=bar baz=qux', { select: 'foo', pick: 'foo' });
+        const attempt = () => parse('foo=bar baz=qux', { select: 'foo', pick: ['foo'] });
         assert.throws(attempt, { message: 'Failed to pick; target is not a plain object' });
     });
 

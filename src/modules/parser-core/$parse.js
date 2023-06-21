@@ -1,7 +1,5 @@
 module.exports = ({ self }) => (path, options = {}) => {
 
-    options.pick = [options.pick ?? []].flat(); // coerce `pick` into an array 
-
     const defaultOptions = {
         initial: {},
         select: undefined,
