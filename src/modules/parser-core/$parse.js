@@ -13,11 +13,7 @@ module.exports = ({ self, config }) => (path, opts = {}) => {
     if (!Array.isArray(pick)) throw new Error('pick must be an array');
     if (select && typeof select !== 'string') throw new Error('select must be a string');
 
-    const getMasterObj = () => {
-        return cache[path] ?? (cache[path] = self.invokeParsers(path));
-    };
-
-    const master = getMasterObj();
+    const master = cache[path] ?? (cache[path] = self.invokeParsers(path));
     const current = select ? _.get(initial, select, {}) : initial;
     const targetSelected = select ? _.get(master, select, {}) : master;
 
