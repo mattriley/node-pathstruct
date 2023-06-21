@@ -22,7 +22,7 @@ module.exports = ({ self, config }) => (path, opts = {}) => {
     }
 
     if (!_.isPlainObject(targetSelected) && pick.length) {
-        throw new Error('Cannot pick from non-object');
+        throw new Error('Failed to pick; target is not a plain object');
     }
 
     const targetPicked = pick.length ? _.pick(targetSelected, pick) : targetSelected;
