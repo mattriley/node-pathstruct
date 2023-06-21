@@ -1,4 +1,4 @@
-module.exports = ({ self, config }) => (f, opts = {}) => {
+module.exports = ({ self, config }) => (path, opts = {}) => {
 
     opts.pick = [opts.pick ?? []].flat(); // coerce `pick` into an array 
 
@@ -7,8 +7,6 @@ module.exports = ({ self, config }) => (f, opts = {}) => {
         select = null,
         pick = [],
         cache = {},
-        pathSeparator,
-        keyValueSeparator
     } = { ...config, ...opts };
 
     if (!_.isPlainObject(initial)) throw new Error('initial must be a plain object');
@@ -16,9 +14,7 @@ module.exports = ({ self, config }) => (f, opts = {}) => {
     if (select && typeof select !== 'string') throw new Error('select must be a string');
 
     const getMasterObj = () => {
-        if (cache[f]) return cache[f];
-        cache[f] = self.invokeParsers(f)
-        return cache[f];
+        return cache[path] ?? (cache[path] = self.invokeParsers(path));
     };
 
     const master = getMasterObj();
