@@ -8,7 +8,7 @@ module.exports = ({ config }) => {
 
     Object.assign(globalThis, { _ });
 
-    const { configure } = composer(modules);
+    const { configure } = composer(modules, { publicPrefix: '<< ' });
     const { compose } = configure(defaultConfig, config);
 
     const { parsers } = compose('parsers');
