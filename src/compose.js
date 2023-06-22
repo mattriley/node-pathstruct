@@ -1,7 +1,7 @@
 const _ = require('lodash');
-const defaultConfig = require('./default-config');
-const modules = require('./modules');
 const composer = require('module-composer');
+const modules = require('./modules');
+const defaultConfig = require('./default-config');
 require('module-composer/extensions/access-modifiers');
 
 module.exports = ({ config }) => {
@@ -10,9 +10,9 @@ module.exports = ({ config }) => {
 
     const { configure } = composer(modules, { publicPrefix: '<<' });
     const { compose } = configure(defaultConfig, config);
-
     const { parsers } = compose('parsers');
-    compose('parserCore', { parsers });
+    const { parserCore } = compose('parserCore', { parsers });
+    compose('api', { parserCore });
     return compose.end();
 
 };

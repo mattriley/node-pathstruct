@@ -14,7 +14,7 @@
         "url": "https://github.com/mattriley/node-pathstruct/issues",
         "email": "m@ttriley.dev"
     },
-    "main": "index.js",
+    "main": "./src/main.js",
     "scripts": {
         "cov": "npx task cov",
         "deploy": "npx task deploy",
