@@ -1,71 +1,59 @@
-const _ = require('lodash');
 const flat = require('flat');
 
-const tags = ['edit'];
+module.exports = ({ lib, config }) => (str, options = {}) => {
 
-const separator = '=';
-const delimiter = ' ';
+    const f = str;
 
+    const { key, keys = [] } = options;
+    if (key) keys.push(key);
 
-module.exports = ({ lib }) => {
+    // for now only take last field in path, e.g. moment.event = event
 
-    const applyFile = (f, { config }) => {
+    return keys
+        .filter(k => _.has(f.metadata, k))
+        .filter(k => !(_.isObject(lib.mget(f.metadata, k)) && _.isEmpty(lib.mget(f.metadata, k)))) // remove empty objects as can happen when "deleting" values in keyval provider...
+        .flatMap(k => {
+            let val = lib.mget(f.metadata, k);
+            if (!val) return []; // i think??
 
-        const { key, keys = [] } = config;
-        if (key) keys.push(key);
+            if (Array.isArray(val)) {
+                const newVals = val.map(val => {
+                    // if (val.includes(' ')) val = `"${val}"`;
+                    return val.replace('/', '_');
+                });
 
-        // for now only take last field in path, e.g. moment.event = event
-
-        return keys
-            .filter(k => _.has(f.metadata, k))
-            .filter(k => !(_.isObject(lib.mget(f.metadata, k)) && _.isEmpty(lib.mget(f.metadata, k)))) // remove empty objects as can happen when "deleting" values in keyval provider...
-            .flatMap(k => {
-                let val = lib.mget(f.metadata, k);
-                if (!val) return []; // i think??
-
-                if (Array.isArray(val)) {
-                    const newVals = val.map(val => {
-                        // if (val.includes(' ')) val = `"${val}"`;
-                        return val.replace('/', '_');
-                    });
-
-                    return [k, '[' + newVals.join(',') + ']'].join(separator);
-                }
+                return [k, '[' + newVals.join(',') + ']'].join(config.keyValueSeparator);
+            }
 
 
-                if (_.isObject(val)) {
-                    const flatObj = flat({ [k]: val }, { safe: true }); // [k];
+            if (_.isObject(val)) {
+                const flatObj = flat({ [k]: val }, { safe: true }); // [k];
 
-                    return Object.entries(flatObj).map(([k, val]) => {
-                        if (Array.isArray(val)) {
-                            const newVals = val.map(val => {
-                                // if (val.includes(' ')) val = `"${val}"`;
-                                return val.replace('/', '_');
-                            });
+                return Object.entries(flatObj).map(([k, val]) => {
+                    if (Array.isArray(val)) {
+                        const newVals = val.map(val => {
+                            // if (val.includes(' ')) val = `"${val}"`;
+                            return val.replace('/', '_');
+                        });
 
-                            return [k, '[' + newVals.join(',') + ']'].join(separator);
-                        }
+                        return [k, '[' + newVals.join(',') + ']'].join(config.keyValueSeparator);
+                    }
 
-                        if (_.isString(val)) {
-                            if (val.includes(' ')) val = `"${val}"`;
-                            return [k, val.replace('/', '_')].join(separator);
-                        }
+                    if (_.isString(val)) {
+                        if (val.includes(' ')) val = `"${val}"`;
+                        return [k, val.replace('/', '_')].join(config.keyValueSeparator);
+                    }
 
-                        return [k, val].join(separator);
-                    });
-                }
-
-
-                if (val?.includes(' ')) val = `"${val}"`;
-                return [k, val?.replace('/', '_')].join(separator);
-                // return [_.last(k.split('.')), val].join(separator);
+                    return [k, val].join(config.keyValueSeparator);
+                });
+            }
 
 
-            })
-            .join(delimiter);
-    };
+            if (val?.includes(' ')) val = `"${val}"`;
+            return [k, val?.replace('/', '_')].join(config.keyValueSeparator);
+            // return [_.last(k.split('.')), val].join(config.keyValueSeparator);
 
 
-    return { tags, applyFile };
+        }).join(' ');
 };
 
