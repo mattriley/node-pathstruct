@@ -43,4 +43,9 @@ module.exports = ({ stringify }) => {
         assert.deepEqual(path, 'foo=bar_baz bar=[baz_baz]');
     });
 
+    test('option to limit keys', () => {
+        const path = stringify({ foo: 'bar', baz: 'qux' }, { keys: ['foo'] });
+        assert.deepEqual(path, 'foo=bar');
+    });
+
 };
