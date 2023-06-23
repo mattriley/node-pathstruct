@@ -1,15 +1,10 @@
 const flat = require('flat');
 
-module.exports = ({ config }) => (obj, options = {}) => {
+module.exports = ({ config }) => (obj, opts = {}) => {
 
-    let { key, keys = [] } = options;
-    if (key) keys.push(key);
+    const pick = opts.pick.length ? opts.pick : Object.keys(flat(obj, { safe: true }));
 
-    if (!keys.length) keys = Object.keys(flat(obj, { safe: true }));
-
-    // for now only take last field in path, e.g. moment.event = event
-
-    return keys
+    return pick
         .filter(k => _.has(obj, k))
         .filter(k => !(_.isObject(_.get(obj, k)) && _.isEmpty(_.get(obj, k)))) // remove empty objects as can happen when "deleting" values in keyval provider...
         .flatMap(k => {

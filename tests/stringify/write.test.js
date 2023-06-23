@@ -49,12 +49,12 @@ module.exports = ({ stringify }) => {
     });
 
     test('option to limit keys', () => {
-        const path = stringify({ foo: 'bar', baz: 'qux' }, { keys: ['foo'] });
+        const path = stringify({ foo: 'bar', baz: 'qux' }, { pick: ['foo'] });
         assert.deepEqual(path, 'foo=bar');
     });
 
     test('option to limit keys not found', () => {
-        const path = stringify({ foo: 'bar' }, { keys: ['baz'] });
+        const path = stringify({ foo: 'bar' }, { pick: ['baz'] });
         assert.deepEqual(path, '');
     });
 

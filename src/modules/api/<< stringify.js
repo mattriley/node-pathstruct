@@ -1,5 +1,6 @@
 module.exports = ({ writer }) => (path, options = {}) => {
 
-    return writer.write(path, options);
+    const defaultOptions = { pick: [] };
+    return writer.write(path, { ...defaultOptions, ...options });
 
 };
