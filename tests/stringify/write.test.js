@@ -38,4 +38,9 @@ module.exports = ({ stringify }) => {
         assert.deepEqual(path, 'foo=bar baz=[qux] x.foo=bar');
     });
 
+    test('forward slash converted to underscore', () => {
+        const path = stringify({ foo: 'bar/baz' });
+        assert.deepEqual(path, 'foo=bar_baz');
+    });
+
 };
