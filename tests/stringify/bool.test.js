@@ -17,20 +17,18 @@ module.exports = ({ stringify }) => {
         assert.equal(stringify({ x: { foo: ['true'] } }), 'x.foo=["true"]');
     });
 
-    // test('boolean false', () => {
-    //     const expected = false;
-    //     assert.equal(stringify('foo=false').foo, expected);
-    //     assert.equal(stringify('foo=[false]').foo[0], expected);
-    //     assert.equal(stringify('x.foo=false').x.foo, expected);
-    //     assert.equal(stringify('x.foo=[false]').x.foo[0], expected);
-    // });
+    test('boolean false', () => {
+        assert.equal(stringify({ foo: false }), 'foo=false');
+        assert.equal(stringify({ foo: [false] }), 'foo=[false]');
+        assert.equal(stringify({ x: { foo: false } }), 'x.foo=false');
+        assert.equal(stringify({ x: { foo: [false] } }), 'x.foo=[false]');
+    });
 
-    // test('string false', () => {
-    //     const expected = 'false';
-    //     assert.equal(stringify('foo="false"').foo, expected);
-    //     assert.equal(stringify('foo=["false"]').foo[0], expected);
-    //     assert.equal(stringify('x.foo="false"').x.foo, expected);
-    //     assert.equal(stringify('x.foo=["false"]').x.foo[0], expected);
-    // });
+    test('string false', () => {
+        assert.equal(stringify({ foo: 'false' }), 'foo="false"');
+        assert.equal(stringify({ foo: ['false'] }), 'foo=["false"]');
+        assert.equal(stringify({ x: { foo: 'false' } }), 'x.foo="false"');
+        assert.equal(stringify({ x: { foo: ['false'] } }), 'x.foo=["false"]');
+    });
 
 };
