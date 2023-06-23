@@ -33,6 +33,11 @@ module.exports = ({ stringify }) => {
         assert.deepEqual(path, 'x.foo=bar');
     });
 
+    test('stringify an object with array value', () => {
+        const path = stringify({ x: { foo: ['bar'] } });
+        assert.deepEqual(path, 'x.foo=[bar]');
+    });
+
     test('stringify a combination', () => {
         const path = stringify({ foo: 'bar', baz: ['qux'], x: { foo: 'bar' } });
         assert.deepEqual(path, 'foo=bar baz=[qux] x.foo=bar');
