@@ -1,6 +1,6 @@
-module.exports = ({ parser }) => (path, options = {}) => {
+module.exports = ({ reader }) => (path, options = {}) => {
 
     const defaultOptions = { select: undefined, pick: [], cache: {}, initial: {} };
-    return parser.parse(path, { ...defaultOptions, ...options });
+    return reader.read(path, { ...defaultOptions, ...options });
 
 };

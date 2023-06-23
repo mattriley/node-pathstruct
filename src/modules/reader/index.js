@@ -1,5 +1,5 @@
 module.exports = {
-    '<< parse': require('./<< parse'),
+    '<< read': require('./<< read'),
     invokeParsers: require('./invoke-parsers'),
     parseArray: require('./parse-array'),
     parseObject: require('./parse-object'),

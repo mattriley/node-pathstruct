@@ -1,5 +1,5 @@
-module.exports = ({ builder }) => (path, options = {}) => {
+module.exports = ({ writer }) => (path, options = {}) => {
 
-    return builder.builder(path, options);
+    return writer.write(path, options);
 
 };
