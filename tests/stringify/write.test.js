@@ -23,4 +23,9 @@ module.exports = ({ stringify }) => {
         assert.deepEqual(path, 'foo=[bar,bar]');
     });
 
+    test('stringify an array with spaces', () => {
+        const path = stringify({ foo: ['bar bar', 'baz baz'] });
+        assert.deepEqual(path, 'foo=[bar bar,baz baz]');
+    });
+
 };
