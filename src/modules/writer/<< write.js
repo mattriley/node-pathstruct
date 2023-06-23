@@ -6,7 +6,6 @@ module.exports = ({ util, config }) => (obj, opts = {}) => {
 
     return pick
         .filter(k => _.has(obj, k))
-        .filter(k => !(_.isObject(_.get(obj, k)) && util.isEmpty(_.get(obj, k)))) // remove empty objects as can happen when "deleting" values in keyval provider...
         .flatMap(k => {
             let val = _.get(obj, k);
             if (util.isEmpty(val)) return []; // i think??
