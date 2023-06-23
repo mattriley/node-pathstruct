@@ -1,19 +1,19 @@
 const flat = require('flat');
 
-module.exports = ({ lib, config }) => (str, options = {}) => {
+module.exports = ({ config }) => (obj, options = {}) => {
 
-    const f = str;
-
-    const { key, keys = [] } = options;
+    let { key, keys = [] } = options;
     if (key) keys.push(key);
+
+    if (!keys.length) keys = Object.keys(flat(obj));
 
     // for now only take last field in path, e.g. moment.event = event
 
     return keys
-        .filter(k => _.has(f.metadata, k))
-        .filter(k => !(_.isObject(lib.mget(f.metadata, k)) && _.isEmpty(lib.mget(f.metadata, k)))) // remove empty objects as can happen when "deleting" values in keyval provider...
+        .filter(k => _.has(obj, k))
+        .filter(k => !(_.isObject(_.get(obj, k)) && _.isEmpty(_.get(obj, k)))) // remove empty objects as can happen when "deleting" values in keyval provider...
         .flatMap(k => {
-            let val = lib.mget(f.metadata, k);
+            let val = _.get(obj, k);
             if (!val) return []; // i think??
 
             if (Array.isArray(val)) {

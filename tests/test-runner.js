@@ -1,6 +1,9 @@
-const tests = require('./parse');
+const readerTests = require('./parse');
+const writerTests = require('./stringify');
 const lib = require('../src/main');
 
-Object.values(tests).forEach(func => {
+const tests = [...Object.values(readerTests), ...Object.values(writerTests)];
+
+tests.forEach(func => {
     func(lib);
 });
