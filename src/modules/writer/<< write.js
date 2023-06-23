@@ -16,15 +16,25 @@ module.exports = ({ config }) => (obj, options = {}) => {
             let val = _.get(obj, k);
             if (!val) return []; // i think??
 
+
+
             if (Array.isArray(val)) {
-                const newVals = val.map(val => {
+                const newVals = val.flatMap(val => {
+                    if (!val) return [];
+                    val = val.trim();
+                    if (!val) return [];
                     // if (val.includes(' ')) val = `"${val}"`;
                     return val.replace('/', '_');
                 });
 
+                if (newVals.length === 0) return [];
+
                 return [k, '[' + newVals.join(',') + ']'].join(config.keyValueSeparator);
             }
 
+            if (!val) return [];
+            val = val.trim();
+            if (!val) return [];
             if (val?.includes(' ')) val = `"${val}"`;
             return [k, val?.replace('/', '_')].join(config.keyValueSeparator);
 
