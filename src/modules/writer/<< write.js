@@ -2,18 +2,17 @@ const flat = require('flat');
 
 module.exports = ({ util, config }) => (obj, opts = {}) => {
 
-    const pick = opts.pick.length ? opts.pick : Object.keys(flat(obj, { safe: true }));
+    const keys = opts.pick.length ? opts.pick : Object.keys(flat(obj, { safe: true }));
 
-    return pick
+    return keys
         .filter(k => _.has(obj, k))
         .flatMap(k => {
-            let val = _.get(obj, k);
+            const val = _.get(obj, k);
 
             if (Array.isArray(val)) {
                 const newVals = val.flatMap(val => {
                     if (util.isEmpty(val)) return [];
                     const str = val.toString().replace('/', '_').trim();
-                    if (!str) return [];
                     const shouldQuote = val === 'true' || val === 'false';
                     return shouldQuote ? `"${str}"` : str;
                 });
