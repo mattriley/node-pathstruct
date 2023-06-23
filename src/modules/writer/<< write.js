@@ -9,26 +9,31 @@ module.exports = ({ util, config }) => (obj, opts = {}) => {
         .flatMap(k => {
             const val = _.get(obj, k);
 
-            if (Array.isArray(val)) {
-                const newVals = val.flatMap(val => {
+            if (util.isEmpty(val)) return [];
+
+            const processArray = () => {
+                return val.flatMap(val => {
                     if (util.isEmpty(val)) return [];
                     const str = val.toString().replace('/', '_').trim();
                     const shouldQuote = val === 'true' || val === 'false';
                     return shouldQuote ? `"${str}"` : str;
                 });
+            };
 
-                if (newVals.length === 0) return [];
+            const processValue = () => {
+                const str = val.toString().replace('/', '_').trim();
+                const shouldQuote = str.includes(' ') || val === 'true' || val === 'false';
+                return shouldQuote ? `"${str}"` : str;
+            };
 
-                return [k, '[' + newVals.join(',') + ']'].join(config.keyValueSeparator);
-            }
 
-            if (util.isEmpty(val)) return [];
 
-            const str = val.toString().replace('/', '_').trim();
-            const shouldQuote = str.includes(' ') || val === 'true' || val === 'false';
-            const res = shouldQuote ? `"${str}"` : str;
+            const processed = Array.isArray(val) ? processArray() : processValue();
+            if (util.isEmpty(processed)) return [];
 
-            return [k, res].join(config.keyValueSeparator);
+            const res = Array.isArray(processed) ? [k, '[' + processed.join(',') + ']'].join(config.keyValueSeparator) : [k, processed].join(config.keyValueSeparator);
+
+            return res;
 
 
         }).join(' ');
