@@ -8,4 +8,9 @@ module.exports = ({ stringify }) => {
         assert.deepEqual(path, 'foo=bar');
     });
 
+    test('stringify two values', () => {
+        const path = stringify({ foo: 'bar', baz: 'qux' });
+        assert.deepEqual(path, 'foo=bar baz=qux');
+    });
+
 };
