@@ -5,7 +5,7 @@ module.exports = ({ config }) => (obj, options = {}) => {
     let { key, keys = [] } = options;
     if (key) keys.push(key);
 
-    if (!keys.length) keys = Object.keys(flat(obj));
+    if (!keys.length) keys = Object.keys(flat(obj, { safe: true }));
 
     // for now only take last field in path, e.g. moment.event = event
 
