@@ -25,33 +25,8 @@ module.exports = ({ config }) => (obj, options = {}) => {
                 return [k, '[' + newVals.join(',') + ']'].join(config.keyValueSeparator);
             }
 
-
-            // if (_.isObject(val)) {
-            //     const flatObj = flat({ [k]: val }, { safe: true }); // [k];
-
-            //     return Object.entries(flatObj).map(([k, val]) => {
-            //         if (Array.isArray(val)) {
-            //             const newVals = val.map(val => {
-            //                 // if (val.includes(' ')) val = `"${val}"`;
-            //                 return val.replace('/', '_');
-            //             });
-
-            //             return [k, '[' + newVals.join(',') + ']'].join(config.keyValueSeparator);
-            //         }
-
-            //         if (_.isString(val)) {
-            //             if (val.includes(' ')) val = `"${val}"`;
-            //             return [k, val.replace('/', '_')].join(config.keyValueSeparator);
-            //         }
-
-            //         return [k, val].join(config.keyValueSeparator);
-            //     });
-            // }
-
-
             if (val?.includes(' ')) val = `"${val}"`;
             return [k, val?.replace('/', '_')].join(config.keyValueSeparator);
-            // return [_.last(k.split('.')), val].join(config.keyValueSeparator);
 
 
         }).join(' ');

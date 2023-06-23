@@ -53,4 +53,9 @@ module.exports = ({ stringify }) => {
         assert.deepEqual(path, 'foo=bar');
     });
 
+    test('option to limit keys not found', () => {
+        const path = stringify({ foo: 'bar' }, { keys: ['baz'] });
+        assert.deepEqual(path, '');
+    });
+
 };
