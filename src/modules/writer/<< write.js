@@ -16,12 +16,11 @@ module.exports = ({ config }) => (obj, opts = {}) => {
             if (Array.isArray(val)) {
                 const newVals = val.flatMap(val => {
                     if (!val) return [];
-                    // if (val === true || val === false) return val;
-                    val = val.toString();
-                    val = val.trim();
-                    if (!val) return [];
-                    // if (val.includes(' ')) val = `"${val}"`;
-                    return val.replace('/', '_');
+                    const str = val.toString().replace('/', '_').trim();
+                    if (!str) return [];
+                    // const shouldQuote = str.includes(' ') || typeof val === 'boolean';
+                    const shouldQuote = val === 'true' || val === 'false';
+                    return shouldQuote ? `"${str}"` : str;
                 });
 
                 if (newVals.length === 0) return [];
@@ -33,12 +32,12 @@ module.exports = ({ config }) => (obj, opts = {}) => {
 
             // if (val === true || val === false) return [k, val].join(config.keyValueSeparator);
 
-            val = val.toString();
+            const str = val.toString().replace('/', '_').trim();
+            if (!str) return [];
+            const shouldQuote = str.includes(' ') || val === 'true' || val === 'false';
+            const res = shouldQuote ? `"${str}"` : str;
 
-            val = val.trim();
-            if (!val) return [];
-            if (val?.includes(' ')) val = `"${val}"`;
-            return [k, val?.replace('/', '_')].join(config.keyValueSeparator);
+            return [k, res].join(config.keyValueSeparator);
 
 
         }).join(' ');
