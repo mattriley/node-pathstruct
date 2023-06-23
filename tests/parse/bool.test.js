@@ -3,8 +3,6 @@ const assert = require('node:assert/strict');
 
 module.exports = ({ parse }) => {
 
-
-
     test('boolean true', () => {
         const expected = true;
         assert.equal(parse('foo=true').foo, expected);
