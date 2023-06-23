@@ -16,7 +16,8 @@ module.exports = ({ config }) => (obj, opts = {}) => {
             if (Array.isArray(val)) {
                 const newVals = val.flatMap(val => {
                     if (!val) return [];
-                    if (val === true || val === false) return val;
+                    // if (val === true || val === false) return val;
+                    val = val.toString();
                     val = val.trim();
                     if (!val) return [];
                     // if (val.includes(' ')) val = `"${val}"`;
@@ -30,8 +31,9 @@ module.exports = ({ config }) => (obj, opts = {}) => {
 
             if (!val) return [];
 
-            if (val === true || val === false) return [k, val].join(config.keyValueSeparator);
+            // if (val === true || val === false) return [k, val].join(config.keyValueSeparator);
 
+            val = val.toString();
 
             val = val.trim();
             if (!val) return [];
