@@ -8,16 +8,12 @@ module.exports = ({ util, config }) => (obj, opts = {}) => {
         .filter(k => _.has(obj, k))
         .flatMap(k => {
             let val = _.get(obj, k);
-            if (util.isEmpty(val)) return []; // i think??
-
-
 
             if (Array.isArray(val)) {
                 const newVals = val.flatMap(val => {
                     if (util.isEmpty(val)) return [];
                     const str = val.toString().replace('/', '_').trim();
                     if (!str) return [];
-                    // const shouldQuote = str.includes(' ') || typeof val === 'boolean';
                     const shouldQuote = val === 'true' || val === 'false';
                     return shouldQuote ? `"${str}"` : str;
                 });
@@ -29,10 +25,7 @@ module.exports = ({ util, config }) => (obj, opts = {}) => {
 
             if (util.isEmpty(val)) return [];
 
-            // if (val === true || val === false) return [k, val].join(config.keyValueSeparator);
-
             const str = val.toString().replace('/', '_').trim();
-            if (!str) return [];
             const shouldQuote = str.includes(' ') || val === 'true' || val === 'false';
             const res = shouldQuote ? `"${str}"` : str;
 
