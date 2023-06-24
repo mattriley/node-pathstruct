@@ -10,15 +10,14 @@ module.exports = ({ util, config }) => (obj, opts = {}) => {
 
         const processArray = val => {
             const results = val.flatMap(val => {
-                val = processValue(val);
-                if (util.isEmpty(val)) return [];
-                return val;
+                return processValue(val) ?? [];
             });
 
             return '[' + results.join(',') + ']';
         };
 
         const processValue = val => {
+            if (util.isEmpty(val)) return undefined;
             if (Array.isArray(val)) return processArray(val);
             const str = val.toString().replace('/', '_').trim();
             const shouldQuote = str.includes(' ') || val === 'true' || val === 'false';
