@@ -13,14 +13,14 @@ module.exports = ({ util, config }) => (obj, opts = {}) => {
 
             const processArray = () => {
                 return val.flatMap(val => {
+                    val = processValue(val);
                     if (util.isEmpty(val)) return [];
-                    const str = val.toString().replace('/', '_').trim();
-                    const shouldQuote = val === 'true' || val === 'false';
-                    return shouldQuote ? `"${str}"` : str;
+                    return val;
                 });
             };
 
-            const processValue = () => {
+            const processValue = val => {
+                if (Array.isArray(val)) return processArray(val);
                 const str = val.toString().replace('/', '_').trim();
                 const shouldQuote = str.includes(' ') || val === 'true' || val === 'false';
                 return shouldQuote ? `"${str}"` : str;
@@ -28,7 +28,7 @@ module.exports = ({ util, config }) => (obj, opts = {}) => {
 
 
 
-            const processed = Array.isArray(val) ? processArray() : processValue();
+            const processed = processValue(val);
             if (util.isEmpty(processed)) return [];
 
             const res = Array.isArray(processed) ? [k, '[' + processed.join(',') + ']'].join(config.keyValueSeparator) : [k, processed].join(config.keyValueSeparator);
