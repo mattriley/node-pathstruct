@@ -1,0 +1,6 @@
+{
+    "globals": {
+        "_": "readonly",
+        "__dirname": "readonly"
+    }
+}

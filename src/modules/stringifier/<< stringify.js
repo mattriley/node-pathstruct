@@ -1,8 +1,8 @@
-module.exports = ({ self, util, config }) => (obj, opts = {}) => {
+module.exports = ({ self, config }) => (obj, opts = {}) => {
 
     const stringify = key => {
         const val = _.get(obj, key);
-        if (util.isEmpty(val)) return [];
+        if (self.isEmpty(val)) return [];
         const str = self.stringifyValue(val);
         return [key, str].join(config.keyValueSeparator);
     };

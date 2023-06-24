@@ -10,9 +10,8 @@ module.exports = ({ config }) => {
 
     const { configure } = composer(modules, { publicPrefix: '<<' });
     const { compose } = configure(defaultConfig, config);
-    const { util } = compose('util');
     const { parser } = compose('parser');
-    const { stringifier } = compose('stringifier', { util });
+    const { stringifier } = compose('stringifier');
     compose('api', { parser, stringifier });
     return compose.end();
 
