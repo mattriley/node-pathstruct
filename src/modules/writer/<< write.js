@@ -9,11 +9,8 @@ module.exports = ({ util, config }) => (obj, opts = {}) => {
         if (util.isEmpty(val)) return [];
 
         const processArray = val => {
-            const results = val.flatMap(val => {
-                return processValue(val) ?? [];
-            });
-
-            return '[' + results.join(',') + ']';
+            const csv = val.flatMap(val => processValue(val) ?? []).join(',');
+            return `[${csv}]`;
         };
 
         const processValue = val => {
