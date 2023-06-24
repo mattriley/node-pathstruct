@@ -1,6 +1,6 @@
 module.exports = {
     api: require('./api'),
-    reader: require('./reader'),
-    util: require('./util'),
-    writer: require('./writer')
+    parser: require('./parser'),
+    stringifier: require('./stringifier'),
+    util: require('./util')
 };

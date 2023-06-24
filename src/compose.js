@@ -11,9 +11,9 @@ module.exports = ({ config }) => {
     const { configure } = composer(modules, { publicPrefix: '<<' });
     const { compose } = configure(defaultConfig, config);
     const { util } = compose('util');
-    const { reader } = compose('reader');
-    const { writer } = compose('writer', { util });
-    compose('api', { reader, writer });
+    const { parser } = compose('parser');
+    const { stringifier } = compose('stringifier', { util });
+    compose('api', { parser, stringifier });
     return compose.end();
 
 };

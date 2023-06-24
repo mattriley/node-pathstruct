@@ -1,6 +1,6 @@
-module.exports = ({ writer }) => (path, options = {}) => {
+module.exports = ({ stringifier }) => (path, options = {}) => {
 
     const defaultOptions = { pick: [] };
-    return writer.write(path, { ...defaultOptions, ...options });
+    return stringifier.stringify(path, { ...defaultOptions, ...options });
 
 };
