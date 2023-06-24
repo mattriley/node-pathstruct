@@ -1,8 +1,7 @@
 {
     "name": "pathstruct",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "",
-    "license": "ISC",
     "homepage": "https://github.com/mattriley/node-pathstruct",
     "repository": "github:mattriley/node-pathstruct",
     "author": {
@@ -15,6 +14,9 @@
         "email": "m@ttriley.dev"
     },
     "main": "./src/main.js",
+    "files": [
+        "src/**/*"
+    ],
     "scripts": {
         "cov": "npx task cov",
         "deploy": "npx task deploy",
