@@ -1,6 +1,8 @@
-module.exports = ({ stringifier }) => (path, options = {}) => {
+const flat = require('flat');
 
-    const defaultOptions = { pick: [] };
-    return stringifier.stringify(path, { ...defaultOptions, ...options });
+module.exports = ({ stringifier }) => (obj, options = {}) => {
+
+    const defaultOptions = { pick: Object.keys(flat(obj, { safe: true })) };
+    return stringifier.stringify(obj, { ...defaultOptions, ...options });
 
 };
