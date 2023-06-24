@@ -29,9 +29,10 @@ module.exports = ({ util, config }) => (obj, opts = {}) => {
 
 
             const processed = processValue(val);
-            if (util.isEmpty(processed)) return [];
 
-            const res = Array.isArray(processed) ? [k, '[' + processed.join(',') + ']'].join(config.keyValueSeparator) : [k, processed].join(config.keyValueSeparator);
+            const strVal = Array.isArray(processed) ? '[' + processed.join(',') + ']' : processed;
+
+            const res = [k, strVal].join(config.keyValueSeparator);
 
             return res;
 
