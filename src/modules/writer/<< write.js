@@ -8,20 +8,20 @@ module.exports = ({ util, config }) => (obj, opts = {}) => {
         const val = _.get(obj, key);
         if (util.isEmpty(val)) return [];
 
-        const processArray = val => {
-            const csv = val.flatMap(val => processValue(val) ?? []).join(',');
+        const stringifyArray = val => {
+            const csv = val.flatMap(val => stringifyValue(val) ?? []).join(',');
             return `[${csv}]`;
         };
 
-        const processValue = val => {
+        const stringifyValue = val => {
             if (util.isEmpty(val)) return undefined;
-            if (Array.isArray(val)) return processArray(val);
+            if (Array.isArray(val)) return stringifyArray(val);
             const str = val.toString().replace('/', '_').trim();
             const shouldQuote = str.includes(' ') || val === 'true' || val === 'false';
             return shouldQuote ? `"${str}"` : str;
         };
 
-        return [key, processValue(val)].join(config.keyValueSeparator);
+        return [key, stringifyValue(val)].join(config.keyValueSeparator);
 
     }).join(' ');
 };
