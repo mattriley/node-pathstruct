@@ -3,19 +3,15 @@ module.exports = ({ self }) => (path, opts = {}) => {
     const { valid, errors } = self.validate(opts);
     if (!valid) throw (errors);
 
-    const master = opts.cache[path] ?? (opts.cache[path] = self.invokeParsers(path));
-    const targetSelected = opts.select ? _.get(master, opts.select, {}) : master;
+    const original = opts.cache[path] ?? (opts.cache[path] = self.invokeParsers(path));
+    const selected = opts.select ? _.get(original, opts.select, {}) : original;
+    const defaulted = _.isPlainObject(selected) ? _.defaultsDeep(selected, opts.initial) : selected;
 
-    if (_.isPlainObject(targetSelected)) {
-        _.defaultsDeep(targetSelected, opts.initial); // TODO: Prevent mutation
-    }
-
-    if (opts.pick.length && !_.isPlainObject(targetSelected)) {
+    if (opts.pick.length && !_.isPlainObject(defaulted)) {
         throw new Error('Failed to pick; target is not a plain object');
     }
 
-    const targetPicked = opts.pick.length ? _.pick(targetSelected, opts.pick) : targetSelected;
-
-    return self.transformValue(targetPicked);
+    const picked = opts.pick.length ? _.pick(defaulted, opts.pick) : defaulted;
+    return self.transformValue(picked);
 
 };
