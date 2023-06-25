@@ -1,4 +1,7 @@
-module.exports = ({ self }) => (path, opts = {}) => {
+module.exports = ({ self }) => (path, options = {}) => {
+
+    const defaultOptions = { select: undefined, pick: [], cache: {}, initial: {} };
+    const opts = { ...defaultOptions, ...options };
 
     const { valid, errors } = self.validate(opts);
     if (!valid) throw (errors);
