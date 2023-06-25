@@ -9,8 +9,8 @@ module.exports = ({ self, config }) => (obj, options = {}) => {
     const flatObj = flat(target, { safe: true });
 
     const stringify = ([key, val]) => {
-        if (self.isEmpty(val)) return [];
         const str = self.stringifyValue(val);
+        if (self.isEmpty(val)) return [];
         return [key, str].join(config.keyValueSeparator);
     };
 
