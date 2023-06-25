@@ -1,10 +1,10 @@
 module.exports = ({ self }) => (path, options = {}) => {
 
+    const { valid, errors } = self.validate({ path, options });
+    if (!valid) throw (errors);
+
     const defaultOptions = { select: undefined, pick: [], cache: {}, initial: {} };
     const opts = { ...defaultOptions, ...options };
-
-    const { valid, errors } = self.validate({ path, options: opts });
-    if (!valid) throw (errors);
 
     return _.flow([
         obj => obj ?? (opts.cache[path] = self.invokeParsers(path)),

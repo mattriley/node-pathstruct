@@ -2,6 +2,7 @@ const Ajv = require('ajv/dist/2020');
 
 const schema = {
     type: 'object',
+    required: ['path'],
     properties: {
         path: {
             type: 'string'

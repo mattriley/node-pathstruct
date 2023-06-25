@@ -5,5 +5,6 @@ module.exports = {
     pickTest: require('./pick.test'),
     readTest: require('./read.test'),
     segmentsTest: require('./segments.test'),
-    selectTest: require('./select.test')
+    selectTest: require('./select.test'),
+    validationTest: require('./validation.test')
 };

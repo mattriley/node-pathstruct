@@ -2,11 +2,13 @@ const flat = require('flat');
 
 module.exports = ({ self, config }) => (obj, options = {}) => {
 
+    const { valid, errors } = self.validate({ obj, options });
+    if (!valid) throw (errors);
+
     const defaultOptions = { pick: Object.keys(obj) };
     const opts = { ...defaultOptions, ...options };
 
-    const { valid, errors } = self.validate({ obj, options: opts });
-    if (!valid) throw (errors);
+
 
     const target = _.pick(obj, opts.pick);
     const flatObj = flat(target, { safe: true });
