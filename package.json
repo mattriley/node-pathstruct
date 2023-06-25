@@ -40,7 +40,7 @@
         "eslint-plugin-import": "^2.27.5",
         "husky": "^8.0.3",
         "module-indexgen": "^0.34.0",
-        "npm-check-updates": "^16.10.12",
-        "task-library": "^0.222.0"
+        "npm-check-updates": "^16.10.13",
+        "task-library": "^0.223.0"
     }
 }
