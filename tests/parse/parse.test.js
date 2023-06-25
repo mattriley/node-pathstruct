@@ -3,9 +3,6 @@ const assert = require('node:assert/strict');
 
 module.exports = ({ parse }) => {
 
-
-
-
     test('parsing a string', () => {
         const struct = parse('foo=bar');
         assert.deepEqual(struct, { foo: 'bar' });

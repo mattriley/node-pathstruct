@@ -1,8 +1,8 @@
 # Pathstruct
 
-<p align="right"><code>95.45% cov</code>&nbsp;<code>212 sloc</code>&nbsp;<code>21 files</code>&nbsp;<code>4 deps</code>&nbsp;<code>9 dev deps</code></p>
+<p align="right"><code>100% cov</code>&nbsp;<code>216 sloc</code>&nbsp;<code>22 files</code>&nbsp;<code>4 deps</code>&nbsp;<code>9 dev deps</code></p>
 
-
+Parse and stringify data structures embedded in file paths.
 
 <br />
 
@@ -19,6 +19,8 @@
 ###### <p align="right"><em>Can't see the diagram?</em> <a id="link-1" href="https://github.com/mattriley/node-pathstruct#user-content-link-1">View it on GitHub</a></p>
 ```mermaid
 graph TD;
+    api-->parser;
+    api-->stringifier;
 ```
 <p align="center">
   <em>This diagram was generated with <a href="https://github.com/mattriley/node-module-composer">Module Composer</a></em>
