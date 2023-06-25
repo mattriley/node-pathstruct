@@ -1,31 +1,39 @@
-const Ajv = require('ajv');
+const Ajv = require('ajv/dist/2020');
 
 const schema = {
-    type: 'object',
-    properties: {
-        initial: {
-            type: 'object'
-        },
-        select: {
+    type: 'array',
+    prefixItems: [
+        {
             type: 'string'
         },
-        pick: {
-            type: 'array',
-            items: {
-                type: 'string'
+        {
+            type: 'object',
+            properties: {
+                initial: {
+                    type: 'object'
+                },
+                select: {
+                    type: 'string'
+                },
+                pick: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                },
+                cache: {
+                    type: 'object'
+                },
+                additionalProperties: false
             }
-        },
-        cache: {
-            type: 'object'
-        },
-        additionalProperties: false
-    }
+        }
+    ]
 };
 
 const ajv = new Ajv();
 const validate = ajv.compile(schema);
 
-module.exports = () => data => {
-    const valid = validate(data);
+module.exports = () => (...args) => {
+    const valid = validate(args);
     return { valid, errors: validate.errors };
 };
