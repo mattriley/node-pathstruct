@@ -16,7 +16,7 @@ module.exports = ({ parse }) => {
     });
 
     test('parsing an object into existing object', () => {
-        const initial = { x: { foo: 'bar' } };
+        const initial = { foo: 'bar' };
         const struct = parse('x.baz=qux', { initial, select: 'x' });
         assert.deepEqual(struct, { foo: 'bar', baz: 'qux' });
     });

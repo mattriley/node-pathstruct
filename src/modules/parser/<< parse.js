@@ -4,11 +4,10 @@ module.exports = ({ self }) => (path, opts = {}) => {
     if (!valid) throw (errors);
 
     const master = opts.cache[path] ?? (opts.cache[path] = self.invokeParsers(path));
-    const current = opts.select ? _.get(opts.initial, opts.select, {}) : opts.initial;
     const targetSelected = opts.select ? _.get(master, opts.select, {}) : master;
 
-    if (_.isPlainObject(targetSelected) && _.isPlainObject(current)) {
-        _.defaultsDeep(targetSelected, current); // TODO: Prevent mutation
+    if (_.isPlainObject(targetSelected)) {
+        _.defaultsDeep(targetSelected, opts.initial); // TODO: Prevent mutation
     }
 
     if (opts.pick.length && !_.isPlainObject(targetSelected)) {
