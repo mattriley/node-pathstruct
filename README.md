@@ -10,9 +10,38 @@ Parse and stringify data structures embedded in file paths.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
 
+- [Install](#install)
+- [Example Usage](#example-usage)
 - [Architecture](#architecture)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Install
+
+###### <p align="right"><a href="https://www.npmjs.com/package/pathstruct">https://www.npmjs.com/package/pathstruct</a></p>
+```sh
+npm install pathstruct
+```
+
+## Example Usage
+
+### `stringify`
+
+```js
+const pathstruct = require('pathstruct');
+const obj = { val: 'foobar', arr: ['foo', 'bar'], x: { val: 'foobar', arr: ['foo', 'bar']} };
+const str = pathstruct.stringify(obj);
+// val=foobar arr=[foo,bar] x.val=foobar x.arr=[foo,bar]
+```
+
+### `parse`
+
+```js
+const pathstruct = require('pathstruct');
+const str = 'val=foobar arr=[foo,bar] x.val=foobar x.arr=[foo,bar]';
+const obj = pathstruct.parse(str);
+// { val: 'foobar', arr: ['foo', 'bar'], x: { val: 'foobar', arr: ['foo', 'bar']} }
+```
 
 ## Architecture
 
