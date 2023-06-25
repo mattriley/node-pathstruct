@@ -1,6 +1,6 @@
 module.exports = ({ self }) => val => {
 
-    const csv = val.flatMap(val => self.stringifyValue(val) ?? []).join(',');
+    const csv = val.map(val => self.stringifyValue(val)).join(',');
     return `[${csv}]`;
 
 };
