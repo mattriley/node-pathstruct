@@ -3,7 +3,7 @@ module.exports = ({ self }) => (path, options = {}) => {
     const defaultOptions = { select: undefined, pick: [], cache: {}, initial: {} };
     const opts = { ...defaultOptions, ...options };
 
-    const { valid, errors } = self.validate(path, opts);
+    const { valid, errors } = self.validate({ path, options: opts });
     if (!valid) throw (errors);
 
     return _.flow([

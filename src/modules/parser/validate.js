@@ -1,12 +1,12 @@
 const Ajv = require('ajv/dist/2020');
 
 const schema = {
-    type: 'array',
-    prefixItems: [
-        {
+    type: 'object',
+    properties: {
+        path: {
             type: 'string'
         },
-        {
+        options: {
             type: 'object',
             properties: {
                 initial: {
@@ -23,17 +23,16 @@ const schema = {
                 },
                 cache: {
                     type: 'object'
-                },
-                additionalProperties: false
+                }
             }
         }
-    ]
+    }
 };
 
 const ajv = new Ajv();
 const validate = ajv.compile(schema);
 
-module.exports = () => (...args) => {
-    const valid = validate(args);
+module.exports = () => data => {
+    const valid = validate(data);
     return { valid, errors: validate.errors };
 };
