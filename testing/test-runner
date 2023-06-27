@@ -1,5 +1,7 @@
-const readerTests = require('./parse');
-const writerTests = require('./stringify');
+#!/usr/bin/env -S node --test --test-reporter=spec
+
+const readerTests = require('../tests/parse');
+const writerTests = require('../tests/stringify');
 const lib = require('../src/main');
 
 const tests = [...Object.values(readerTests), ...Object.values(writerTests)];
