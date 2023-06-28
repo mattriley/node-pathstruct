@@ -1,7 +1,4 @@
-const test = require('node:test');
-const assert = require('node:assert/strict');
-
-module.exports = ({ stringify }) => {
+module.exports = ({ test, assert }) => ({ stringify }) => {
 
     test('boolean true', () => {
         assert.equal(stringify({ foo: true }), 'foo=true');

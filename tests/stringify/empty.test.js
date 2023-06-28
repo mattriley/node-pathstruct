@@ -1,7 +1,4 @@
-const test = require('node:test');
-const assert = require('node:assert/strict');
-
-module.exports = ({ stringify }) => {
+module.exports = ({ test, assert }) => ({ stringify }) => {
 
     test('empty', () => {
         const expected = '';
