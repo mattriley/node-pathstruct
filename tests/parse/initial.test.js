@@ -24,4 +24,10 @@ module.exports = ({ test, assert }) => ({ parse }) => {
         assert.deepEqual(struct, { x: { foo: 'bar', baz: undefined } });
     });
 
+    test('initial boolean remains boolean', () => {
+        const initial = { bool: true };
+        const struct = parse('', { initial });
+        assert.deepEqual(struct, { bool: true });
+    });
+
 };
