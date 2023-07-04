@@ -1,3 +1,7 @@
+const mergeCustomizer = (objValue, srcValue) => {
+    if (Array.isArray(objValue)) return srcValue;
+};
+
 module.exports = ({ self }) => (path, options = {}) => {
 
     const { valid, errors } = self.validate({ path, options });
@@ -9,7 +13,7 @@ module.exports = ({ self }) => (path, options = {}) => {
     return _.flow([
         obj => obj ?? (opts.cache[path] = self.invokeParsers(path)),
         obj => opts.select ? _.get(obj, opts.select, {}) : obj,
-        obj => _.isPlainObject(obj) ? _.defaultsDeep(obj, opts.initial) : obj,
+        obj => _.isPlainObject(obj) ? _.mergeWith({}, opts.initial, obj, mergeCustomizer) : obj,
         obj => {
             if (!opts.pick.length || _.isPlainObject(obj)) return obj;
             throw new Error('Failed to pick; target is not a plain object');

@@ -30,4 +30,10 @@ module.exports = ({ test, assert }) => ({ parse }) => {
         assert.deepEqual(struct, { bool: true });
     });
 
+    test('changing an array', () => {
+        const initial = { x: { arr: ['foo', 'bar'] } };
+        const struct = parse('x.arr=[baz]', { initial });
+        assert.deepEqual(struct, { x: { arr: ['baz'] } });
+    });
+
 };
