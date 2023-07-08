@@ -36,4 +36,10 @@ module.exports = ({ test, assert }) => ({ parse }) => {
         assert.deepEqual(struct, { x: { arr: ['baz'] } });
     });
 
+    test('initial has array but incoming is a string', () => {
+        const initial = { arr: ['foo'] };
+        const struct = parse('arr=bar', { initial });
+        assert.deepEqual(struct, { arr: ['bar'] });
+    });
+
 };

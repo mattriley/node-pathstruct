@@ -1,5 +1,5 @@
 const mergeCustomizer = (objValue, srcValue) => {
-    if (Array.isArray(objValue)) return srcValue;
+    if (Array.isArray(objValue)) return [srcValue].flat();
 };
 
 module.exports = ({ self }) => (path, options = {}) => {
