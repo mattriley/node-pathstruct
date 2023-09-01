@@ -30,7 +30,7 @@
         "ajv": "^8.12.0",
         "flat": "^5.0.2",
         "lodash": "^4.17.21",
-        "module-composer": "^0.125.0"
+        "module-composer": "^0.149.0"
     },
     "devDependencies": {
         "c8": "^8.0.1",
@@ -38,12 +38,12 @@
         "cloc": "^1.98.0-cloc",
         "doctoc": "^2.2.1",
         "ejs": "^3.1.9",
-        "eslint": "^8.47.0",
+        "eslint": "^8.48.0",
         "eslint-plugin-import": "^2.28.1",
         "husky": "^8.0.3",
-        "module-indexgen": "^0.37.0",
-        "module-testrunner": "^0.19.0",
-        "npm-check-updates": "^16.12.2",
+        "module-indexgen": "^0.38.0",
+        "module-testrunner": "^0.20.0",
+        "npm-check-updates": "^16.13.2",
         "task-library": "file:../node-task-library",
         "testing": "file:./testing"
     }

@@ -1,3 +1,3 @@
 const compose = require('./compose');
-const { modules } = compose({});
-module.exports = modules.api;
+const { api } = compose();
+module.exports = api;
