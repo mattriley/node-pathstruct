@@ -1,4 +1,4 @@
-const flat = require('flat');
+const { o } = require('1up');
 
 module.exports = ({ self, config }) => (obj, options = {}) => {
 
@@ -8,10 +8,10 @@ module.exports = ({ self, config }) => (obj, options = {}) => {
     const defaultOptions = { pick: Object.keys(obj) };
     const opts = { ...defaultOptions, ...options };
 
-
-
     const target = _.pick(obj, opts.pick);
-    const flatObj = flat(target, { safe: true });
+    const flatObj = o.flatten(target, { delimiter: '.' });
+
+    console.warn(flatObj);
 
     const stringify = ([key, val]) => {
         const str = self.stringifyValue(val);
