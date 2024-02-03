@@ -11,8 +11,6 @@ module.exports = ({ self, config }) => (obj, options = {}) => {
     const target = _.pick(obj, opts.pick);
     const flatObj = o.flatten(target, { delimiter: '.' });
 
-    console.warn(flatObj);
-
     const stringify = ([key, val]) => {
         const str = self.stringifyValue(val);
         if (self.isEmpty(val)) return [];
