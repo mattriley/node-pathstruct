@@ -1,5 +1,6 @@
 module.exports = {
     pathSeparator: '/',
     keyValueSeparator: '=',
-    arrayDelimiter: ','
+    arrayDelimiter: ',',
+    overrideDelimiter: '!'
 };
