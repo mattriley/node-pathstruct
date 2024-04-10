@@ -1,4 +1,4 @@
-const { o } = require('1up');
+const up = require('1up');
 
 module.exports = ({ self, config }) => (obj, options = {}) => {
 
@@ -9,7 +9,7 @@ module.exports = ({ self, config }) => (obj, options = {}) => {
     const opts = { ...defaultOptions, ...options };
 
     const target = _.pick(obj, opts.pick);
-    const flatObj = o.flatten(target, { delimiter: '.' });
+    const flatObj = up.obj.flatten(target, { delimiter: '.' });
 
     const stringify = ([key, val]) => {
         const str = self.stringifyValue(val);
