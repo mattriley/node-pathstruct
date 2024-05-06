@@ -1,6 +1,6 @@
 # Pathstruct
 
-<p align="right"><code>99.18% cov</code>&nbsp;<code>223 sloc</code>&nbsp;<code>22 files</code>&nbsp;<code>4 deps</code>&nbsp;<code>13 dev deps</code></p>
+<p align="right"><code>98.6% cov</code>&nbsp;<code>256 sloc</code>&nbsp;<code>25 files</code>&nbsp;<code>4 deps</code>&nbsp;<code>13 dev deps</code></p>
 
 Parse and stringify data structures embedded in file paths.
 
@@ -61,6 +61,7 @@ const str = pathstruct.stringify(obj);
 graph TD;
     api-->parser;
     api-->stringifier;
+    api-->array;
 ```
 <p align="center">
   <em>This diagram was generated with <a href="https://github.com/mattriley/node-module-composer">Module Composer</a></em>

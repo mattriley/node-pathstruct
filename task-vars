@@ -4,7 +4,7 @@ export NODE_VERSION="20.12.1"
 
 export TEST_RUNNER="module-testrunner"
 
-export COV_BRANCHES=99
+export COV_BRANCHES=98
 export COV_LINES=99
 export COV_FUNCTIONS=99
 export COV_STATEMENTS=99

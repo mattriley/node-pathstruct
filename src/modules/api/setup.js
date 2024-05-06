@@ -1,5 +1,5 @@
-module.exports = ({ parser, stringifier }) => () => {
+module.exports = ({ parser, stringifier, array }) => () => {
 
-    return { ...parser, ...stringifier };
+    return { ...parser, ...stringifier, array };
 
 };
