@@ -1,6 +1,6 @@
 {
     "name": "pathstruct",
-    "version": "0.12.0",
+    "version": "0.13.0",
     "description": "Parse and stringify data structures embedded in file paths.",
     "homepage": "https://github.com/mattriley/node-pathstruct",
     "repository": "github:mattriley/node-pathstruct",
