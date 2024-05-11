@@ -1,9 +1,10 @@
-module.exports = () => plurals => {
+module.exports = () => inputKeys => {
 
-    const singulars = plurals.flatMap(key => key.replace(/s$/, '').replace(/es$/, ''));
-    const keys = [...plurals, ...singulars];
-    const add = keys.map(key => `${key}+`);
-    const rem = keys.map(key => `${key}-`);
-    return [...keys, ...add, ...rem];
+    const singulars = inputKeys.flatMap(key => key.replace(/s$/, '').replace(/es$/, ''));
+    const plurals = singulars.flatMap(key => [`${key}s`, `${key}es`]);
+    const resultKeys = _.uniq([...inputKeys, ...singulars, ...plurals]);
+    const add = resultKeys.map(key => `${key}+`);
+    const rem = resultKeys.map(key => `${key}-`);
+    return [...resultKeys, ...add, ...rem];
 
 };

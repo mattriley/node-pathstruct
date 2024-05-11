@@ -10,8 +10,8 @@ module.exports = ({ test, assert }) => ({ array }) => {
     });
 
     test('append and remove with different keys', () => {
-        const obj = { sub: ['a', 'b'], 'subjct+': ['c'], 'sub-': ['a'] };
-        const actual = array.apply(obj, ['sub', 'subjct']);
+        const obj = { sub: ['a', 'b'], 'subject+': ['c'], 'sub-': ['a'] };
+        const actual = array.apply(obj, ['sub', 'subject']);
         const expected = { sub: ['b', 'c'] };
         assert.deepEqual(actual, expected);
         assert.equal(actual['sub+'], undefined);
