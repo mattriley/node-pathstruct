@@ -1,7 +1,8 @@
 const _ = require('lodash');
 
-module.exports = () => (obj, keys) => {
+module.exports = ({ array }) => (obj, key, ...aliases) => {
 
+    const keys = array.deriveKeys([key, ...aliases]);
     const setKeys = keys.filter(key => !['+', '-'].find(sym => key.endsWith(sym)));
     const addKeys = keys.filter(key => ['+'].find(sym => key.endsWith(sym)));
     const remKeys = keys.filter(key => ['-'].find(sym => key.endsWith(sym)));
@@ -18,8 +19,7 @@ module.exports = () => (obj, keys) => {
     const removeValues = getValues(remKeys);
     const result = _.uniq(_.compact(values.concat(addValues))).sort().filter(v => !removeValues.includes(v));
 
-    const [preferredKey] = keys;
     const newObj = _.omit(obj, keys);
-    return { ...newObj, [preferredKey]: result };
+    return { ...newObj, [key]: result };
 
 };

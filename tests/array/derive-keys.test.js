@@ -5,13 +5,10 @@ module.exports = ({ test, assert }) => ({ array }) => {
         const expected = [
             'subjects', 'subs',
             'subject', 'sub',
-            'subjectes', 'subes',
             'subjects+', 'subs+',
             'subject+', 'sub+',
-            'subjectes+', 'subes+',
             'subjects-', 'subs-',
-            'subject-', 'sub-',
-            'subjectes-', 'subes-'
+            'subject-', 'sub-'
         ];
         assert.equal(actual[0], 'subjects');
         assert.deepEqual(actual, expected);
@@ -21,16 +18,12 @@ module.exports = ({ test, assert }) => ({ array }) => {
         const actual = array.deriveKeys(['subject', 'sub']);
         const expected = [
             'subject', 'sub',
-            'subjects', 'subjectes',
-            'subs', 'subes',
+            'subjects', 'subs',
             'subject+', 'sub+',
-            'subjects+', 'subjectes+',
-            'subs+', 'subes+',
+            'subjects+', 'subs+',
             'subject-', 'sub-',
-            'subjects-', 'subjectes-',
-            'subs-', 'subes-'
+            'subjects-', 'subs-'
         ];
-        console.warn(actual);
         assert.equal(actual[0], 'subject');
         assert.deepEqual(actual, expected);
     });
