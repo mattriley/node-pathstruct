@@ -2,7 +2,7 @@ const _ = require('lodash');
 
 module.exports = ({ array }) => (obj, key, ...aliases) => {
 
-    const keys = array.deriveKeys([key, ...aliases]);
+    const keys = array.deriveKeys([key, ...aliases.flat()]);
     const setKeys = keys.filter(key => !['+', '-'].find(sym => key.endsWith(sym)));
     const addKeys = keys.filter(key => ['+'].find(sym => key.endsWith(sym)));
     const remKeys = keys.filter(key => ['-'].find(sym => key.endsWith(sym)));
