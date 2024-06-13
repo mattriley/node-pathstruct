@@ -16,32 +16,10 @@ module.exports = ({ self }) => (path, options = {}) => {
 
     return _.flow([
         obj => obj ?? (opts.cache[path] = self.invokeParsers(path)),
-        obj => {
-            return Object.entries(obj).reduce((acc, [key, val]) => {
-                const operator = ['+', '-'].find(op => key.endsWith(op));
-                const cleanKey = operator ? key.slice(0, -1) : key;
-                const mainKey = aliasLookup[cleanKey] ?? cleanKey;
-                const newKey = mainKey + (operator ?? '');
-                acc[newKey] = val;
-                return acc;
-            }, {});
-        },
+        obj => self.applyAliases(obj, aliasLookup),
         obj => opts.select ? _.get(obj, opts.select, {}) : obj,
         obj => _.isPlainObject(obj) ? _.mergeWith({}, opts.initial, obj, mergeCustomizer) : obj,
-        obj => {
-            return Object.entries(obj).reduce((acc, [key, val]) => {
-                const operations = {
-                    '+': target => target.concat(val),
-                    '-': target => target.filter(s => !val.includes(s))
-                };
-                const operator = key.slice(-1);
-                const targetKey = key.slice(0, -1);
-                const operation = operations[operator];
-                if (!operation) return acc;
-                delete acc[key];
-                return { ...acc, [targetKey]: operation(acc[targetKey] ?? []) };
-            }, obj);
-        },
+        obj => self.applyOperators(obj),
         obj => {
             if (!opts.pick.length || _.isPlainObject(obj)) return obj;
             throw new Error('Failed to pick; target is not a plain object');
