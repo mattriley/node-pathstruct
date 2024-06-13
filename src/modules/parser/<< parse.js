@@ -7,24 +7,16 @@ module.exports = ({ self }) => (path, options = {}) => {
     const { valid, errors } = self.validate({ path, options });
     if (!valid) throw (errors);
 
-    const defaultOptions = { select: undefined, pick: [], cache: {}, initial: {} };
+    const defaultOptions = { select: undefined, aliases: {}, pick: [], cache: {}, initial: {} };
     const opts = { ...defaultOptions, ...options };
 
-    // const aliasLookup = options.aliases?.reduce((acc, arr) => {
-    //     const [key, ...aliases] = arr;
-    //     aliases.forEach(alias => acc[alias] = key);
-    //     return acc;
-    // }, {});
-
-    const aliasLookup = Object.entries(options.aliases ?? {}).reduce((acc, [key, aliases]) => {
-        aliases.forEach(alias => acc[alias] = key);
-        return acc;
-    }, {});
+    const aliasLookup = Object.fromEntries(Object.entries(opts.aliases).flatMap(([key, aliases]) => {
+        return aliases.map(alias => [alias, key]);
+    }));
 
     return _.flow([
         obj => obj ?? (opts.cache[path] = self.invokeParsers(path)),
         obj => {
-            if (!options.aliases) return obj;
             return Object.entries(obj).reduce((acc, [key, val]) => {
                 const operator = ['+', '-'].find(op => key.endsWith(op));
                 const cleanKey = operator ? key.slice(0, -1) : key;
