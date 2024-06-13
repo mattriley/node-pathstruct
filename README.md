@@ -1,6 +1,6 @@
 # Pathstruct
 
-<p align="right"><code>99.23% cov</code>&nbsp;<code>237 sloc</code>&nbsp;<code>22 files</code>&nbsp;<code>4 deps</code>&nbsp;<code>13 dev deps</code></p>
+<p align="right"><code>98.57% cov</code>&nbsp;<code>252 sloc</code>&nbsp;<code>22 files</code>&nbsp;<code>4 deps</code>&nbsp;<code>13 dev deps</code></p>
 
 Parse and stringify data structures embedded in file paths.
 
