@@ -12,9 +12,9 @@ module.exports = ({ self }) => (path, options = {}) => {
 
     return _.flow([
         obj => obj ?? (opts.cache[path] = self.invokeParsers(path)),
-        obj => self.applyAliases(obj, aliasLookup),
         obj => opts.select ? _.get(obj, opts.select, {}) : obj,
         obj => _.isPlainObject(obj) ? _.mergeWith({}, opts.initial, obj, self.arrayMergeCustomizer) : obj,
+        obj => _.isPlainObject(obj) ? self.applyAliases(obj, aliasLookup) : obj,
         obj => self.applyOperators(obj),
         obj => self.validatePick(obj, opts),
         obj => opts.pick.length ? _.pick(obj, opts.pick) : obj,

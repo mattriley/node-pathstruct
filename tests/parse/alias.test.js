@@ -12,4 +12,11 @@ module.exports = ({ test, assert }) => ({ parse }) => {
         assert.deepEqual(struct, { 'foo': ['baz'] });
     });
 
+    test('alias with object', () => {
+        const aliases = { foo: ['f'] };
+        const options = { select: 'p', aliases };
+        const struct = parse('p.f=[bar]', options);
+        assert.deepEqual(struct, { 'foo': ['bar'] });
+    });
+
 };
