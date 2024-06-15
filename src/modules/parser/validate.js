@@ -9,6 +9,7 @@ const schema = {
         },
         options: {
             type: 'object',
+            additionalProperties: false,
             properties: {
                 initial: {
                     type: 'object'
@@ -21,6 +22,9 @@ const schema = {
                     items: {
                         type: 'string'
                     }
+                },
+                aliases: {
+                    type: 'object'
                 },
                 cache: {
                     type: 'object'
