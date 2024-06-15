@@ -1,7 +1,3 @@
-const mergeCustomizer = (objValue, srcValue) => {
-    if (Array.isArray(objValue)) return [srcValue].flat();
-};
-
 module.exports = ({ self }) => (path, options = {}) => {
 
     const { valid, errors } = self.validate({ path, options });
@@ -18,7 +14,7 @@ module.exports = ({ self }) => (path, options = {}) => {
         obj => obj ?? (opts.cache[path] = self.invokeParsers(path)),
         obj => self.applyAliases(obj, aliasLookup),
         obj => opts.select ? _.get(obj, opts.select, {}) : obj,
-        obj => _.isPlainObject(obj) ? _.mergeWith({}, opts.initial, obj, mergeCustomizer) : obj,
+        obj => _.isPlainObject(obj) ? _.mergeWith({}, opts.initial, obj, self.arrayMergeCustomizer) : obj,
         obj => self.applyOperators(obj),
         obj => {
             if (!opts.pick.length || _.isPlainObject(obj)) return obj;
