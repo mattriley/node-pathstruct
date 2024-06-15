@@ -5,7 +5,7 @@ module.exports = ({ config }) => str => {
 
     return matchArrays(str).reduce((acc, m) => {
         const { key, val } = m.groups;
-        const arr = removeSurroundingSquareBrackets(val).split(config.arrayDelimiter);
+        const arr = removeSurroundingSquareBrackets(val).split(config.arrayDelimiter).map(el => el.trim());
         return _.set(acc, key, arr);
     }, {});
 

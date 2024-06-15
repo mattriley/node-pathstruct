@@ -25,6 +25,11 @@ module.exports = ({ test, assert }) => ({ parse }) => {
         assert.deepEqual(struct, { foo: ['bar bar', 'baz baz'] });
     });
 
+    test('parsing an array of string with surrounding spaces are trimmed', () => {
+        const struct = parse('foo=[ bar , baz ]');
+        assert.deepEqual(struct, { foo: ['bar', 'baz'] });
+    });
+
     test('parsing an object with a string', () => {
         const struct = parse('x.foo=bar');
         assert.deepEqual(struct, { x: { foo: 'bar' } });
