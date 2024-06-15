@@ -9,5 +9,6 @@ module.exports = {
     transformArray: require('./transform-array'),
     transformObject: require('./transform-object'),
     transformValue: require('./transform-value'),
-    validate: require('./validate')
+    validate: require('./validate'),
+    validatePick: require('./validate-pick')
 };

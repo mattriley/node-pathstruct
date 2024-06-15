@@ -16,10 +16,7 @@ module.exports = ({ self }) => (path, options = {}) => {
         obj => opts.select ? _.get(obj, opts.select, {}) : obj,
         obj => _.isPlainObject(obj) ? _.mergeWith({}, opts.initial, obj, self.arrayMergeCustomizer) : obj,
         obj => self.applyOperators(obj),
-        obj => {
-            if (!opts.pick.length || _.isPlainObject(obj)) return obj;
-            throw new Error('Failed to pick; target is not a plain object');
-        },
+        obj => self.validatePick(obj, opts),
         obj => opts.pick.length ? _.pick(obj, opts.pick) : obj,
         obj => self.transformValue(obj)
     ])(opts.cache[path]);
