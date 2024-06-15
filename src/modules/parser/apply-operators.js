@@ -10,9 +10,8 @@ module.exports = () => obj => {
         const cleanKey = key.slice(0, -1);
         const operation = operations[operator];
         if (!operation) return acc;
-        delete acc[key];
         const newVal = operation(acc[cleanKey] ?? [], val);
-        return { ...acc, [cleanKey]: newVal };
+        return Object.assign(_.omit(acc, [key]), { [cleanKey]: newVal });
     }, obj);
 
 };
