@@ -1,4 +1,4 @@
-const matchScalar = str => [...str.matchAll(/(?<keypath>\S+)=(?<val>"[^"]*"|[\w-_+]+)/g)];
+const matchScalar = str => [...str.matchAll(/(?<keypath>\S+)=(?<val>"[^"]*"|\S+)/g)];
 
 module.exports = ({ config }) => str => {
 
