@@ -10,6 +10,11 @@ module.exports = ({ test, assert }) => ({ parse }) => {
         assert.deepEqual(struct, { foo: 'ba\'r' });
     });
 
+    test('parsing a string with an extension', () => {
+        const struct = parse('foo=bar.jpg');
+        assert.deepEqual(struct, { foo: 'bar' });
+    });
+
     test('parsing two strings', () => {
         const struct = parse('foo=bar baz=qux');
         assert.deepEqual(struct, { foo: 'bar', baz: 'qux' });

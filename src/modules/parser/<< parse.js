@@ -1,3 +1,5 @@
+const pathlib = require('node:path');
+
 module.exports = ({ self }) => (path, options = {}) => {
 
     const { valid, errors } = self.validate({ path, options });
@@ -10,8 +12,11 @@ module.exports = ({ self }) => (path, options = {}) => {
         return aliases.map(alias => [alias, key]);
     }));
 
+    const parsedPath = pathlib.parse(path);
+    const pathWithoutExt = parsedPath.ext.includes('=') ? path : pathlib.join(parsedPath.base, parsedPath.name);
+
     return _.flow([
-        obj => obj ?? (opts.cache[path] = self.invokeParsers(path)),
+        obj => obj ?? (opts.cache[path] = self.invokeParsers(pathWithoutExt)),
         obj => opts.select ? _.get(obj, opts.select, {}) : obj,
         obj => _.isPlainObject(obj) ? _.mergeWith({}, opts.initial, obj, self.arrayMergeCustomizer) : obj,
         obj => _.isPlainObject(obj) ? self.applyAliases(obj, aliasLookup) : obj,
