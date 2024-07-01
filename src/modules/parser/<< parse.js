@@ -13,7 +13,7 @@ module.exports = ({ self }) => (path, options = {}) => {
     }));
 
     const parsedPath = pathlib.parse(path);
-    const pathWithoutExt = parsedPath.ext.includes('=') ? path : pathlib.join(parsedPath.base, parsedPath.name);
+    const pathWithoutExt = parsedPath.ext.includes('=') ? path : pathlib.join(parsedPath.dir, parsedPath.name);
 
     return _.flow([
         obj => obj ?? (opts.cache[path] = self.invokeParsers(pathWithoutExt)),
