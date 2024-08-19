@@ -1,5 +1,5 @@
 const operations = {
-    '+': (target, val) => target.concat(val),
+    '+': (target, val) => [target].flat().concat(val),
     '-': (target, val) => target.filter(s => !val.includes(s))
 };
 

@@ -18,6 +18,12 @@ module.exports = ({ test, assert }) => ({ parse }) => {
         assert.deepEqual(struct, { 'foo': ['bar', 'baz'] });
     });
 
+    test('append to non-array', () => {
+        const initial = {};
+        const struct = parse('foo+=[baz] foo=bar', { initial });
+        assert.deepEqual(struct, { 'foo': ['bar', 'baz'] });
+    });
+
     test('remove', () => {
         const initial = { foo: ['bar', 'baz'] };
         const struct = parse('foo-=[baz]', { initial });
