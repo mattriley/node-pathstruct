@@ -1,8 +1,8 @@
 module.exports = {
     pathSeparator: '/',
-    keyValueExpression: /(?<keypath>\S+)=(?<val>[^\]]*\]|"[^"]*"|\S*)/g,
+    keyValueExpression: /(?<key>\S+)=(?<val>[^\]]*\]|"[^"]*"|\S*)/g,
     keyValueSeparator: '=',
-    arrayValueExpression: /^\[(.*)\]$/,
+    arrayValueExpression: /^\[(?<val>.*)\]$/,
     arrayDelimiter: ',',
     overrideDelimiter: '!'
 };
