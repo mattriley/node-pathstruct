@@ -20,5 +20,4 @@ module.exports = ({ config }) => str => {
 
     return _.sortBy(matches, match => match.override).reduce((acc, match) => _.set(acc, ...match.entry), {});
 
-
 };

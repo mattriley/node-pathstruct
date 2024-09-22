@@ -3,7 +3,7 @@ module.exports = {
     applyAliases: require('./apply-aliases'),
     applyOperators: require('./apply-operators'),
     arrayMergeCustomizer: require('./array-merge-customizer'),
-    invokeParsers: require('./invoke-parsers'),
+    baseParse: require('./base-parse'),
     transformArray: require('./transform-array'),
     transformObject: require('./transform-object'),
     transformValue: require('./transform-value'),
