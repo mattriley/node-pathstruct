@@ -4,7 +4,7 @@ module.exports = ({ config }) => str => {
 
     const parseArray = str => {
         if (!str.startsWith('[')) return;
-        return str.replace(config.arrayValueExpression, '$<val>').split(config.arrayDelimiter).map(el => el.trim());
+        return str.slice(1, -1).split(config.arrayDelimiter).map(el => el.trim());
     };
 
     const matches = str.split(config.pathSeparator).flatMap(seg => {
@@ -18,18 +18,7 @@ module.exports = ({ config }) => str => {
         });
     });
 
-    const matchesSorted = _.sortBy(matches, match => match.override).map(match => _.set({}, ...match.entry));
-
-    // console.warn(matchesSorted);
-
-
-    // const [overrides, standards] = _.partition(matches, obj => obj.override);
-
-    // const o = _.merge({}, ...standards.map(s => s.partial), ...overrides.map(o => o.partial));
-
-    const o = _.merge({}, ...matchesSorted);
-
-    return o;
+    return _.sortBy(matches, match => match.override).reduce((acc, match) => _.set(acc, ...match.entry), {});
 
 
 };
