@@ -1,19 +1,14 @@
-const keyValExp = /(?<keypath>\S+)=(?<val>[^\]]*\]|"[^"]*"|\S*)/g;
-const arrBracketExp = /^\[(.*)\]$/;
-
 module.exports = ({ config }) => str => {
 
     if (!str.includes(config.keyValueSeparator)) return {}; // Minor optimisation
 
     const parseArray = str => {
         if (!str.startsWith('[')) return;
-        return str.replace(arrBracketExp, '$1').split(config.arrayDelimiter).map(el => el.trim());
-
+        return str.replace(config.arrayContentExpression, '$1').split(config.arrayDelimiter).map(el => el.trim());
     };
 
-
     const matches = str.split(config.pathSeparator).flatMap(seg => {
-        return [...seg.matchAll(keyValExp)].map(result => {
+        return [...seg.matchAll(config.keyValueExpression)].map(result => {
             const { keypath, val } = result.groups;
             const arr = parseArray(val);
             const override = keypath.includes(config.overrideDelimiter);
