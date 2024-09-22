@@ -1,5 +1,5 @@
 module.exports = {
-    keyValueExpression: /(?<key>\S+)=(?<val>[^\]]*\]|"[^"]*"|\S*)/g,
+    keyValueExpression: /(?<key>\S+)=(?<val>\[[^\]]*\]|"[^"]*"|\S*)/g,
     keyValueSeparator: '=',
     arrayDelimiter: ',',
     overrideDelimiter: '!',
