@@ -13,12 +13,12 @@ module.exports = ({ config }) => str => {
             const override = key.includes(config.overrideDelimiter);
             const newKey = key.replace(config.overrideDelimiter, '.');
             const newVal = parseArray(val) ?? val;
-            const partial = _.set({}, newKey, newVal);
-            return { override, partial };
+            const entry = [newKey, newVal];
+            return { override, entry };
         });
     });
 
-    const matchesSorted = _.sortBy(matches, match => match.override).map(match => match.partial);
+    const matchesSorted = _.sortBy(matches, match => match.override).map(match => _.set({}, ...match.entry));
 
     // console.warn(matchesSorted);
 
