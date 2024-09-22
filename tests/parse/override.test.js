@@ -15,4 +15,9 @@ module.exports = ({ test, assert }) => ({ parse }) => {
         assert.deepEqual(struct, { x: { foo: 'foo' } });
     });
 
+    test('force overriding an array with a string at parent directory', () => {
+        const struct = parse('x!foo=[a]/x.foo=[b]');
+        assert.deepEqual(struct, { x: { foo: ['a'] } });
+    });
+
 };

@@ -1,19 +1,34 @@
-module.exports = ({ self, config }) => str => {
+module.exports = ({ config }) => str => {
 
     if (!str.includes(config.keyValueSeparator)) return {}; // Minor optimisation
 
-    const parsers = [self.parseObject, self.parseArray];
+    const match = str => [...str.matchAll(/(?<keypath>\S+)=(?<val>[^\]]*\]|"[^"]*"|\S*)/g)];
+    const removeSurroundingSquareBrackets = str => str.replace(/^\[(.*)\]$/, '$1');
 
-    const objs = str.split(config.pathSeparator).flatMap(seg => {
-        return parsers.flatMap(p => p(seg));
+    const all = str.split(config.pathSeparator).flatMap(seg => {
+
+
+        const matches = match(seg).map(result => {
+            const { keypath, val } = result.groups;
+            const arr = val.startsWith('[') ? removeSurroundingSquareBrackets(val).split(config.arrayDelimiter).map(el => el.trim()) : undefined;
+            const override = keypath.includes(config.overrideDelimiter);
+            const newKeypath = keypath.replace(config.overrideDelimiter, '.');
+            const partial = _.set({}, newKeypath, arr ?? val);
+            return { keypath: newKeypath, val: arr ?? val, override, partial };
+        });
+
+
+        return matches;
+
+
     });
 
-    const standards = objs.flatMap(obj => obj.standard ?? []);
-    const overrides = objs.flatMap(obj => obj.override ?? []);
 
-    // console.warn({ standards, overrides });
+    const [overrides, standards] = _.partition(all, obj => obj.override);
 
-    return _.merge({}, ...standards, ...overrides);
+    const o = _.merge({}, ...standards.map(s => s.partial), ...overrides.map(o => o.partial));
+
+    return o;
 
 
 };
