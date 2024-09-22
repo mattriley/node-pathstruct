@@ -10,19 +10,24 @@ module.exports = ({ config }) => str => {
     const matches = str.split(config.pathSeparator).flatMap(seg => {
         return [...seg.matchAll(config.keyValueExpression)].map(result => {
             const { key, val } = result.groups;
-            const arr = parseArray(val);
             const override = key.includes(config.overrideDelimiter);
             const newKey = key.replace(config.overrideDelimiter, '.');
-            const newVal = arr ?? val;
+            const newVal = parseArray(val) ?? val;
             const partial = _.set({}, newKey, newVal);
             return { override, partial };
         });
     });
 
+    const matchesSorted = _.sortBy(matches, match => match.override).map(match => match.partial);
 
-    const [overrides, standards] = _.partition(matches, obj => obj.override);
+    // console.warn(matchesSorted);
 
-    const o = _.merge({}, ...standards.map(s => s.partial), ...overrides.map(o => o.partial));
+
+    // const [overrides, standards] = _.partition(matches, obj => obj.override);
+
+    // const o = _.merge({}, ...standards.map(s => s.partial), ...overrides.map(o => o.partial));
+
+    const o = _.merge({}, ...matchesSorted);
 
     return o;
 
