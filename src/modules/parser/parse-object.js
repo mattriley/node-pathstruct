@@ -12,6 +12,6 @@ module.exports = ({ config }) => str => {
         return acc;
     }, { standard: {}, override: {} });
 
-    return { ...standard, ...override };
+    return { standard, override };
 
 };
