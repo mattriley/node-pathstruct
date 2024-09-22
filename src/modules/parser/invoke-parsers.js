@@ -4,7 +4,7 @@ module.exports = ({ config }) => str => {
 
     const parseArray = str => {
         if (!str.startsWith('[')) return;
-        return str.replace(config.arrayContentExpression, '$1').split(config.arrayDelimiter).map(el => el.trim());
+        return str.replace(config.arrayValueExpression, '$1').split(config.arrayDelimiter).map(el => el.trim());
     };
 
     const matches = str.split(config.pathSeparator).flatMap(seg => {
