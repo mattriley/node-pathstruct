@@ -3,5 +3,6 @@ module.exports = {
     keyValueSeparator: '=',
     arrayDelimiter: ',',
     overrideDelimiter: '!',
-    pathSeparator: '/'
+    pathSeparator: '/',
+    pathSeparatorEncoded: '>'
 };

@@ -40,9 +40,9 @@ module.exports = ({ test, assert }) => ({ stringify }) => {
         assert.deepEqual(path, 'foo=bar baz=[qux] x.foo=bar');
     });
 
-    test('forward slash converted to underscore', () => {
+    test('forward slash encoded', () => {
         const path = stringify({ foo: 'bar/baz', bar: ['baz/baz'] });
-        assert.deepEqual(path, 'foo=bar_baz bar=[baz_baz]');
+        assert.deepEqual(path, 'foo=bar>baz bar=[baz>baz]');
     });
 
     test('option to limit keys', () => {
