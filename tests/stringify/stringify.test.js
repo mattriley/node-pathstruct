@@ -10,6 +10,11 @@ module.exports = ({ test, assert }) => ({ stringify }) => {
         assert.deepEqual(path, 'foo=bar baz=qux');
     });
 
+    test('stringify two values with custom key-value delimiter', () => {
+        const path = stringify({ foo: 'bar', baz: 'qux' }, { keyValueDelimiter: ' • ' });
+        assert.deepEqual(path, 'foo=bar • baz=qux');
+    });
+
     test('stringify a value with a space', () => {
         const path = stringify({ foo: 'bar bar' });
         assert.deepEqual(path, 'foo="bar bar"');
