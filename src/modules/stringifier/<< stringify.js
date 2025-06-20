@@ -12,7 +12,7 @@ module.exports = ({ self, config }) => (obj, options = {}) => {
     const flatObj = up.obj.flatten(target, { delimiter: '.' });
 
     const stringify = ([key, val]) => {
-        const str = self.stringifyValue(val);
+        const str = self.stringifyValue(val, opts);
         if (self.isEmpty(val)) return [];
         return [key, str].join(config.keyValueSeparator);
     };

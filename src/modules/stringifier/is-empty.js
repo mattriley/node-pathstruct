@@ -4,7 +4,6 @@ const isEmpty = val => {
         () => val === null,
         () => val === undefined,
         () => Array.isArray(val) && val.every(isEmpty),
-        // () => _.isPlainObject(val) && Object.values(val).every(isEmpty),
         () => val.toString().trim().length === 0
     ];
 

@@ -44,7 +44,7 @@
         "module-indexgen": "^0.41.0",
         "module-testrunner": "^0.21.0",
         "npm-check-updates": "^16.14.18",
-        "task-library": "file:../node-task-library",
+        "task-library": "^0.274.0",
         "testing": "file:./testing"
     }
 }

@@ -20,6 +20,11 @@ module.exports = ({ test, assert }) => ({ stringify }) => {
         assert.deepEqual(path, 'foo="bar bar"');
     });
 
+    test('stringify a value without a space but force quotes', () => {
+        const path = stringify({ foo: 'bar' }, { forceQuotes: true });
+        assert.deepEqual(path, 'foo="bar"');
+    });
+
     test('stringify an array', () => {
         const path = stringify({ foo: ['bar', 'baz'] });
         assert.deepEqual(path, 'foo=[bar,baz]');

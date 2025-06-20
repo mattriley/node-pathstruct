@@ -5,5 +5,6 @@ module.exports = {
     arrayDelimiter: ',',
     overrideDelimiter: '!',
     pathSeparator: '/',
-    pathSeparatorEncoded: '>'
+    pathSeparatorEncoded: '>',
+    forceQuotes: false
 };
