@@ -19,7 +19,7 @@ module.exports = ({ self }) => (path, options = {}) => {
 
     return _.flow([
         obj => obj ?? (opts.cache[path] = self.baseParse(pathWithoutExt)),
-        obj => opts.select ? _.get(obj, opts.select, {}) : obj,
+        obj => opts.select ? $.obj.getDeep(obj, opts.select, {}) : obj,
         obj => $.obj.isPlain(obj) ? _.mergeWith({}, opts.initial, obj, mergeCustomiser) : obj,
         obj => $.obj.isPlain(obj) ? self.applyAliases(obj, aliasLookup) : obj,
         obj => self.applyOperatorsInPlace(obj),
