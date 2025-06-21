@@ -7,8 +7,7 @@ module.exports = ({ self }) => (path, options = {}) => {
     if (!valid) throw (errors);
 
     const defaultOptions = { select: undefined, aliases: {}, pick: [], cache: {}, initial: {} };
-    // const opts = _.defaults({}, options, defaultOptions);
-    const opts = { ...defaultOptions, ...options }
+    const opts = _.defaults({}, options, defaultOptions);
 
     const aliasLookup = Object.fromEntries(Object.entries(opts.aliases).flatMap(([key, aliases]) => {
         return aliases.map(alias => [alias, key]);
