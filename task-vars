@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export NODE_VERSION="20.12.1"
+export NODE_VERSION="22.16.0"
 
 export TEST_RUNNER="module-testrunner"
 
