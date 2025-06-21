@@ -1,4 +1,5 @@
 const pathlib = require('node:path');
+const mergeWith = require('lodash.mergewith');
 
 module.exports = ({ self }) => (path, options = {}) => {
 
@@ -20,7 +21,7 @@ module.exports = ({ self }) => (path, options = {}) => {
     return $.fun.pipe([
         obj => obj ?? (opts.cache[path] = self.baseParse(pathWithoutExt)),
         obj => opts.select ? $.obj.getDeep(obj, opts.select, {}) : obj,
-        obj => $.obj.isPlain(obj) ? _.mergeWith({}, opts.initial, obj, mergeCustomiser) : obj,
+        obj => $.obj.isPlain(obj) ? mergeWith({}, opts.initial, obj, mergeCustomiser) : obj,
         obj => $.obj.isPlain(obj) ? self.applyAliases(obj, aliasLookup) : obj,
         obj => self.applyOperatorsInPlace(obj),
         obj => self.validatePick(obj, opts),
