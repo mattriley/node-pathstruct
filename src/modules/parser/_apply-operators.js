@@ -1,3 +1,5 @@
+// Optimised on 21 June 2025.
+
 const operations = {
     '+': (target, val) => [target].flat().concat(val),
     '-': (target, val) => target.filter(s => !val.includes(s))
@@ -11,7 +13,8 @@ module.exports = () => obj => {
         const operation = operations[operator];
         if (!operation) return acc;
         const newVal = operation(acc[cleanKey] ?? [], val);
-        return Object.assign(_.omit(acc, [key]), { [cleanKey]: newVal });
+        const { [key]: _, ...rest } = acc;
+        return { ...rest, [cleanKey]: newVal };
     }, obj);
 
 };
