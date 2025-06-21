@@ -1,10 +1,17 @@
+// Optimised on 21 June 2025.
+
 module.exports = () => (obj, aliasLookup) => {
 
-    return _.mapKeys(obj, (val, key) => {
-        const operator = ['+', '-'].find(op => key.endsWith(op)) ?? '';
+    const result = {};
+
+    for (const [key, val] of Object.entries(obj)) {
+        const operator = key.endsWith('+') ? '+' : key.endsWith('-') ? '-' : '';
         const cleanKey = operator ? key.slice(0, -1) : key;
         const preferredKey = aliasLookup[cleanKey] ?? cleanKey;
-        return preferredKey + operator;
-    });
+        const newKey = preferredKey + operator;
+        result[newKey] = val;
+    }
+
+    return result;
 
 };
