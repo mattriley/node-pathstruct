@@ -6,5 +6,6 @@ module.exports = {
     overrideDelimiter: '!',
     pathSeparator: '/',
     pathSeparatorEncoded: '>',
-    forceQuotes: false
+    forceQuotes: false,
+    nils: ['nil', 'null', '""', '']
 };

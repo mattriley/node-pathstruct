@@ -1,12 +1,10 @@
 // Optimised on 21 June 2025 with help from ChatGPT.
 
-const nils = ['nil', 'null', '""', ''];
-
 module.exports = ({ self, config }) => val => {
 
     if ($.obj.isPlain(val)) return self.transformObject(val);
     if (Array.isArray(val)) return self.transformArray(val);
-    if (nils.includes(val)) return undefined;
+    if (config.nils.includes(val)) return undefined;
 
     const str = val.toString();
 
