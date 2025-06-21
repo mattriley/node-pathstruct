@@ -21,7 +21,7 @@ module.exports = ({ self }) => (path, options = {}) => {
         obj => opts.select ? _.get(obj, opts.select, {}) : obj,
         obj => _.isPlainObject(obj) ? _.mergeWith({}, opts.initial, obj, mergeCustomiser) : obj,
         obj => _.isPlainObject(obj) ? self.applyAliases(obj, aliasLookup) : obj,
-        obj => self.applyOperators(obj),
+        obj => self.applyOperatorsInPlace(obj),
         obj => self.validatePick(obj, opts),
         obj => opts.pick.length ? _.pick(obj, opts.pick) : obj,
         obj => self.transformValue(obj)

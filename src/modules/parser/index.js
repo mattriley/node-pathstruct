@@ -1,6 +1,6 @@
 module.exports = {
     _applyAliases: require('./_apply-aliases'),
-    _applyOperators: require('./_apply-operators'),
+    _applyOperatorsInPlace: require('./_apply-operators-in-place'),
     _baseParse: require('./_base-parse'),
     _transformArray: require('./_transform-array'),
     _transformObject: require('./_transform-object'),
