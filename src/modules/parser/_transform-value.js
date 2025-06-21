@@ -7,9 +7,7 @@ module.exports = ({ self, config }) => val => {
     if (config.nils.includes(val)) return undefined;
 
     const str = val.toString();
-
-    if (str === 'false') return false;
-    if (str === 'true') return true;
+    if ($.bool.isLiteralBoolean(str)) return $.bool.toBooleanFromLiteral(str);
 
     const replaced = str.replace(config.pathSeparatorEncoded, config.pathSeparator);
     return $.str.stripSymmetricDelimiter(replaced, '"');

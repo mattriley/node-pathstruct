@@ -14,8 +14,7 @@ module.exports = ({ self, config }) => (val, options = {}) => {
         str = str.replace(config.pathSeparator, config.pathSeparatorEncoded);
     }
 
-    const isBooleanLiteral = val === 'true' || val === 'false';
-    const shouldQuote = opts.forceQuotes || (opts.quoteSpaces && str.includes(' ')) || isBooleanLiteral;
+    const shouldQuote = opts.forceQuotes || (opts.quoteSpaces && str.includes(' ')) || $.bool.isLiteralBoolean(val);
 
     return shouldQuote ? `"${str}"` : str;
 
