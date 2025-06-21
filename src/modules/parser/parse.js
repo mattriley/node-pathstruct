@@ -6,7 +6,8 @@ module.exports = ({ self }) => (path, options = {}) => {
     if (!valid) throw (errors);
 
     const defaultOptions = { select: undefined, aliases: {}, pick: [], cache: {}, initial: {} };
-    const opts = _.defaults({}, options, defaultOptions);
+    // const opts = _.defaults({}, options, defaultOptions);
+    const opts = { ...defaultOptions, ...options }
 
     const aliasLookup = Object.fromEntries(Object.entries(opts.aliases).flatMap(([key, aliases]) => {
         return aliases.map(alias => [alias, key]);
@@ -19,8 +20,8 @@ module.exports = ({ self }) => (path, options = {}) => {
     return _.flow([
         obj => obj ?? (opts.cache[path] = self.baseParse(pathWithoutExt)),
         obj => opts.select ? _.get(obj, opts.select, {}) : obj,
-        obj => _.isPlainObject(obj) ? _.mergeWith({}, opts.initial, obj, mergeCustomiser) : obj,
-        obj => _.isPlainObject(obj) ? self.applyAliases(obj, aliasLookup) : obj,
+        obj => $.obj.isPlain(obj) ? _.mergeWith({}, opts.initial, obj, mergeCustomiser) : obj,
+        obj => $.obj.isPlain(obj) ? self.applyAliases(obj, aliasLookup) : obj,
         obj => self.applyOperatorsInPlace(obj),
         obj => self.validatePick(obj, opts),
         obj => opts.pick.length ? _.pick(obj, opts.pick) : obj,
