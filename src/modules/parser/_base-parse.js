@@ -27,7 +27,7 @@ module.exports = ({ config }) => str => {
     }
 
     for (const [path, val] of [...normal, ...overrides]) {
-        $.obj.putInPlace(result, path, val);
+        $.obj.setDeepInPlace(result, path, val);
     }
 
     return result;

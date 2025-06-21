@@ -5,7 +5,7 @@ module.exports = ({ self, config }) => (obj, options = {}) => {
 
     const defaultOptions = { ...config, pick: Object.keys(obj) };
     const opts = { ...defaultOptions, ...options };
-    const target = $.obj.pick(obj, opts.pick);
+    const target = $.obj.pickDeep(obj, opts.pick);
     const flatObj = $.obj.flat(target, { delimiter: '.' });
 
     const stringify = ([key, val]) => {
