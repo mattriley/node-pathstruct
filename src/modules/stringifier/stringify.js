@@ -5,16 +5,8 @@ module.exports = ({ self, config }) => (obj, options = {}) => {
 
     const defaultOptions = { ...config, pick: Object.keys(obj) };
     const opts = { ...defaultOptions, ...options };
-
-    // Native pick equivalent
-    const target = {};
-    for (const key of opts.pick) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            target[key] = obj[key];
-        }
-    }
-
-    const flatObj = $.obj.flatten(target, { delimiter: '.' });
+    const target = $.obj.pick(obj, opts.pick);
+    const flatObj = $.obj.flat(target, { delimiter: '.' });
 
     const stringify = ([key, val]) => {
         if (self.isEmpty(val)) return [];

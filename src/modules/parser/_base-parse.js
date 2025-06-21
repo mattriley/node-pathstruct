@@ -22,22 +22,12 @@ module.exports = ({ config }) => str => {
             const path = key.replace(config.overrideDelimiter, '.');
             const parsedVal = parseArray(val) ?? val;
             const entry = [path, parsedVal];
-
             (isOverride ? overrides : normal).push(entry);
         }
     }
 
-    const set = (obj, path, value) => {
-        const keys = path.split('.');
-        let cur = obj;
-        for (let i = 0; i < keys.length - 1; i++) {
-            cur = cur[keys[i]] ??= {};
-        }
-        cur[keys.at(-1)] = value;
-    };
-
     for (const [path, val] of [...normal, ...overrides]) {
-        set(result, path, val);
+        $.obj.putInPlace(result, path, val);
     }
 
     return result;
