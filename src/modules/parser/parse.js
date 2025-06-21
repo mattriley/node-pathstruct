@@ -14,11 +14,12 @@ module.exports = ({ self }) => (path, options = {}) => {
 
     const parsedPath = pathlib.parse(path);
     const pathWithoutExt = parsedPath.ext.includes('=') ? path : pathlib.join(parsedPath.dir, parsedPath.name);
+    const mergeCustomiser = (objValue, srcValue) => { if (Array.isArray(objValue)) return [srcValue].flat(); };
 
     return _.flow([
         obj => obj ?? (opts.cache[path] = self.baseParse(pathWithoutExt)),
         obj => opts.select ? _.get(obj, opts.select, {}) : obj,
-        obj => _.isPlainObject(obj) ? _.mergeWith({}, opts.initial, obj, self.arrayMergeCustomizer) : obj,
+        obj => _.isPlainObject(obj) ? _.mergeWith({}, opts.initial, obj, mergeCustomiser) : obj,
         obj => _.isPlainObject(obj) ? self.applyAliases(obj, aliasLookup) : obj,
         obj => self.applyOperators(obj),
         obj => self.validatePick(obj, opts),
