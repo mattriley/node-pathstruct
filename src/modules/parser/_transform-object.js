@@ -1,7 +1,16 @@
+// Optimised on 21 June 2025 with help from ChatGPT.
+
 module.exports = ({ self }) => obj => {
 
-    const res = _.mapValues(obj, self.transformValue);
-    const empty = _.isEmpty(res) || Object.values(res).every(v => v === undefined);
-    return empty ? undefined : res;
+    const result = {};
+    let hasMeaningfulValue = false;
+
+    for (const [key, value] of Object.entries(obj)) {
+        const transformed = self.transformValue(value);
+        result[key] = transformed;
+        if (transformed !== undefined) hasMeaningfulValue = true;
+    }
+
+    return hasMeaningfulValue ? result : undefined;
 
 };
