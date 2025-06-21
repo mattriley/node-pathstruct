@@ -17,7 +17,7 @@ module.exports = ({ self }) => (path, options = {}) => {
     const pathWithoutExt = parsedPath.ext.includes('=') ? path : pathlib.join(parsedPath.dir, parsedPath.name);
     const mergeCustomiser = (objValue, srcValue) => { if (Array.isArray(objValue)) return [srcValue].flat(); };
 
-    return _.flow([
+    return $.fun.pipe([
         obj => obj ?? (opts.cache[path] = self.baseParse(pathWithoutExt)),
         obj => opts.select ? $.obj.getDeep(obj, opts.select, {}) : obj,
         obj => $.obj.isPlain(obj) ? _.mergeWith({}, opts.initial, obj, mergeCustomiser) : obj,
