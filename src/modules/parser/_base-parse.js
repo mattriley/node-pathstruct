@@ -1,23 +1,44 @@
+// Optimised on 21 June 2025 with help from ChatGPT.
+
 module.exports = ({ config }) => str => {
+    if (!str.includes(config.keyValueSeparator)) return {};
 
-    if (!str.includes(config.keyValueSeparator)) return {}; // Minor optimisation
+    const result = {};
 
-    const parseArray = str => {
-        if (!str.startsWith('[')) return;
-        return str.slice(1, -1).split(config.arrayDelimiter).map(el => el.trim());
+    const parseArray = val =>
+        val.startsWith('[')
+            ? val.slice(1, -1).split(config.arrayDelimiter).map(s => s.trim())
+            : undefined;
+
+    const segments = str.split(config.pathSeparator);
+
+    const overrides = [];
+    const normal = [];
+
+    for (const seg of segments) {
+        for (const match of seg.matchAll(config.keyValueExpression)) {
+            const { key, val } = match.groups;
+            const isOverride = key.includes(config.overrideDelimiter);
+            const path = key.replace(config.overrideDelimiter, '.');
+            const parsedVal = parseArray(val) ?? val;
+            const entry = [path, parsedVal];
+
+            (isOverride ? overrides : normal).push(entry);
+        }
+    }
+
+    const set = (obj, path, value) => {
+        const keys = path.split('.');
+        let cur = obj;
+        for (let i = 0; i < keys.length - 1; i++) {
+            cur = cur[keys[i]] ??= {};
+        }
+        cur[keys.at(-1)] = value;
     };
 
-    const matches = str.split(config.pathSeparator).flatMap(seg => {
-        return [...seg.matchAll(config.keyValueExpression)].map(result => {
-            const { key, val } = result.groups;
-            const override = key.includes(config.overrideDelimiter);
-            const newKey = key.replace(config.overrideDelimiter, '.');
-            const newVal = parseArray(val) ?? val;
-            const entry = [newKey, newVal];
-            return { override, entry };
-        });
-    });
+    for (const [path, val] of [...normal, ...overrides]) {
+        set(result, path, val);
+    }
 
-    return _.sortBy(matches, match => match.override).reduce((acc, match) => _.set(acc, ...match.entry), {});
-
+    return result;
 };
