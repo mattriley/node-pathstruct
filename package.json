@@ -27,7 +27,7 @@
         "test": "npx task test"
     },
     "dependencies": {
-        "1up": "^1.105.0",
+        "1up": "^1.107.0",
         "ajv": "^8.12.0",
         "lodash.mergewith": "^4.6.2",
         "module-composer": "^0.165.0"
