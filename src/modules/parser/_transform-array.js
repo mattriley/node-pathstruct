@@ -6,11 +6,11 @@ module.exports = ({ self }) => arr => {
 
     for (let i = 0; i < arr.length; i++) {
         const transformed = self.transformValue(arr[i]);
-        if (transformed !== undefined) {
+        if (transformed !== null) {
             result.push(transformed);
         }
     }
 
-    return result.length > 0 ? result : undefined;
+    return result.length > 0 ? result : null;
 
 };

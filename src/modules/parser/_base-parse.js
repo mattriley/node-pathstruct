@@ -8,7 +8,7 @@ module.exports = ({ config }) => str => {
     const parseArray = val =>
         val.startsWith('[')
             ? val.slice(1, -1).split(config.arrayDelimiter).map(s => s.trim())
-            : undefined;
+            : null;
 
     const segments = str.split(config.pathSeparator);
 

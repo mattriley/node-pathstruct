@@ -8,9 +8,9 @@ module.exports = ({ self }) => obj => {
     for (const [key, value] of Object.entries(obj)) {
         const transformed = self.transformValue(value);
         result[key] = transformed;
-        if (transformed !== undefined) hasMeaningfulValue = true;
+        if (transformed !== null) hasMeaningfulValue = true;
     }
 
-    return hasMeaningfulValue ? result : undefined;
+    return hasMeaningfulValue ? result : null;
 
 };

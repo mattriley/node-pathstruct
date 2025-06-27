@@ -4,7 +4,7 @@ module.exports = ({ self, config }) => val => {
 
     if ($.obj.isPlain(val)) return self.transformObject(val);
     if (Array.isArray(val)) return self.transformArray(val);
-    if (config.nils.includes(val)) return undefined;
+    if (config.nils.includes(val)) return null;
 
     const str = val.toString();
     if ($.bool.isLiteralBoolean(str)) return $.bool.toBooleanFromLiteral(str);

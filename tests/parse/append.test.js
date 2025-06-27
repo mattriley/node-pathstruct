@@ -33,7 +33,7 @@ module.exports = ({ test, assert }) => ({ parse }) => {
     test('remove without target', () => {
         const initial = {};
         const struct = parse('foo-=[baz]', { initial });
-        assert.deepEqual(struct, undefined);
+        assert.deepEqual(struct, null);
     });
 
     test('remove runs last', () => {

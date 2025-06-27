@@ -2,7 +2,7 @@
 
 module.exports = ({ self, config }) => (val, options = {}) => {
 
-    if (self.isEmpty(val)) return undefined;
+    if (self.isEmpty(val)) return null;
     if (Array.isArray(val)) return self.stringifyArray(val);
 
     const opts = { quoteSpaces: true, forceQuotes: false, ...options };
