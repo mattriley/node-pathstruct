@@ -6,9 +6,6 @@ module.exports = ({ self }) => {
     const cache = {};
 
     return (path, options = {}) => {
-
-        if (cache[path]) return cache[path];
-
         const { valid, errors } = self.validate({ path, options });
         if (!valid) throw (errors);
 
@@ -23,8 +20,10 @@ module.exports = ({ self }) => {
         const pathWithoutExt = parsedPath.ext.includes('=') ? path : pathlib.join(parsedPath.dir, parsedPath.name);
         const mergeCustomiser = (objValue, srcValue) => { if (Array.isArray(objValue)) return [srcValue].flat(); };
 
-        cache[path] = $.pipe([
-            () => self.baseParse(pathWithoutExt),
+        cache[path] ??= self.baseParse(pathWithoutExt);
+
+        return $.pipe([
+            () => cache[path],
             obj => opts.select ? $.obj.getDeep(obj, opts.select, {}) : obj,
             obj => $.obj.isPlain(obj) ? mergeWith({}, opts.initial, obj, mergeCustomiser) : obj,
             obj => $.obj.isPlain(obj) ? self.applyAliases(obj, aliasLookup) : obj,
@@ -33,8 +32,6 @@ module.exports = ({ self }) => {
             obj => opts.pick.length ? $.obj.pickDeep(obj, opts.pick) : obj,
             obj => self.transformValue(obj)
         ])();
-
-        return cache[path];
 
     };
 
