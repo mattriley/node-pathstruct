@@ -1,6 +1,6 @@
 // Optimised on 21 June 2025 with help from ChatGPT.
 
-module.exports = ({ self, config }) => (val, options = {}) => {
+module.exports = ({ self, config, $ }) => (val, options = {}) => {
 
     if (self.isEmpty(val)) return null;
     if (Array.isArray(val)) return self.stringifyArray(val);

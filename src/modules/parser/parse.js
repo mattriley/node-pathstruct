@@ -1,7 +1,7 @@
 const pathlib = require('node:path');
 const mergeWith = require('lodash.mergewith');
 
-module.exports = ({ self }) => {
+module.exports = ({ self, $, _ }) => {
 
     const cache = {};
 

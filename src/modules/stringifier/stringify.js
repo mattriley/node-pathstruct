@@ -1,4 +1,4 @@
-module.exports = ({ self, config }) => (obj, options = {}) => {
+module.exports = ({ self, config, $ }) => (obj, options = {}) => {
 
     const { valid, errors } = self.validate({ obj, options });
     if (!valid) throw errors;

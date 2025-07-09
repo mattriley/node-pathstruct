@@ -1,6 +1,6 @@
 // Optimised on 21 June 2025 with help from ChatGPT.
 
-module.exports = ({ config }) => str => {
+module.exports = ({ config, $ }) => str => {
     if (!str.includes(config.keyValueSeparator)) return {};
 
     const result = {};

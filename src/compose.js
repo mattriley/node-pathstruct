@@ -6,11 +6,9 @@ const defaultConfig = require('./default-config');
 
 module.exports = ({ config } = {}) => {
 
-    Object.assign(globalThis, { _, $ });
-
     const { compose } = composer(modules, { config, defaultConfig });
-    const { parser } = compose('parser');
-    const { stringifier } = compose('stringifier');
+    const { parser } = compose('parser', { $, _ });
+    const { stringifier } = compose('stringifier', { $, _ });
 
     return compose('api', { parser, stringifier });
 
