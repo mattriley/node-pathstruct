@@ -24,7 +24,7 @@ module.exports = ({ self, $, _ }) => {
 
         return $.pipe([
             () => cache[path],
-            obj => opts.select ? $.obj.getDeep(obj, opts.select, {}) : obj,
+            obj => opts.select ? $.obj.dig(obj, opts.select, {}) : obj,
             obj => $.obj.isPlain(obj) ? mergeWith({}, opts.initial, obj, mergeCustomiser) : obj,
             obj => $.obj.isPlain(obj) ? self.applyAliases(obj, aliasLookup) : obj,
             obj => self.applyOperatorsInPlace(obj),
