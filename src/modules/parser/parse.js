@@ -29,7 +29,7 @@ module.exports = ({ self, $, _ }) => {
             obj => $.obj.isPlain(obj) ? self.applyAliases(obj, aliasLookup) : obj,
             obj => self.applyOperatorsInPlace(obj),
             obj => self.validatePick(obj, opts),
-            obj => opts.pick.length ? $.obj.pickDeep(obj, opts.pick) : obj,
+            obj => opts.pick.length ? $.obj.pick(obj, opts.pick) : obj,
             obj => self.transformValue(obj)
         ])();
 

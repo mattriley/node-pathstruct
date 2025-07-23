@@ -1,21 +1,26 @@
-module.exports = ({ self, config, $ }) => (obj, options = {}) => {
+module.exports = ({ self, config, $ }) => {
 
-    const { valid, errors } = self.validate({ obj, options });
-    if (!valid) throw errors;
+    const flat = $.obj.configure.flat({ delimiter: '.', mutate: false });
 
-    const defaultOptions = { ...config, pick: Object.keys(obj) };
-    const opts = { ...defaultOptions, ...options };
-    const target = $.obj.pickDeep(obj, opts.pick);
-    const flatObj = $.obj.flat(target, { delimiter: '.' });
+    return (obj, options = {}) => {
 
-    const stringify = ([key, val]) => {
-        if (self.isEmpty(val)) return [];
-        const str = self.stringifyValue(val, opts);
-        return [key, str].join(config.keyValueSeparator);
+        const { valid, errors } = self.validate({ obj, options });
+        if (!valid) throw errors;
+
+        const defaultOptions = { ...config, pick: Object.keys(obj) };
+        const opts = { ...defaultOptions, ...options };
+        const target = $.obj.pick(obj, opts.pick);
+        const flatObj = flat(target);
+
+        const stringify = ([key, val]) => {
+            if (self.isEmpty(val)) return [];
+            const str = self.stringifyValue(val, opts);
+            return [key, str].join(config.keyValueSeparator);
+        };
+
+        return Object.entries(flatObj)
+            .flatMap(stringify)
+            .join(opts.keyValueDelimiter);
+
     };
-
-    return Object.entries(flatObj)
-        .flatMap(stringify)
-        .join(opts.keyValueDelimiter);
-
 };
