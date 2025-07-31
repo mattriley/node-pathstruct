@@ -10,6 +10,8 @@ module.exports = ({ config } = {}) => {
     const { parser } = compose('parser', { $, _ });
     const { stringifier } = compose('stringifier', { $, _ });
 
-    return compose('api', { parser, stringifier });
+    const { parse } = parser;
+    const { stringify } = stringifier;
+    return { parse, stringify, ...compose.modules }
 
 };
