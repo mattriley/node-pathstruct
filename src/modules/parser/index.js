@@ -7,5 +7,6 @@ module.exports = {
     _transformValue: require('./_transform-value'),
     _validate: require('./_validate'),
     _validatePick: require('./_validate-pick'),
+    configure: require('./configure'),
     parse: require('./parse')
 };
