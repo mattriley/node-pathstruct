@@ -10,6 +10,6 @@ module.exports = ({ self, config, $ }) => val => {
     if ($.bool.isLiteralBoolean(str)) return $.bool.toBooleanFromLiteral(str);
 
     const replaced = str.replace(config.pathSeparatorEncoded, config.pathSeparator);
-    return $.str.stripSymmetricDelimiter(replaced, '"');
+    return $.str.dequote(replaced, '"');
 
 };

@@ -1,8 +1,7 @@
 // Optimised on 21 June 2025 with help from ChatGPT.
+// Modified to parse @tag items into result.flags
 
 module.exports = ({ config, $ }) => str => {
-    if (!str.includes(config.keyValueSeparator)) return {};
-
     const result = {};
 
     const parseArray = val =>
@@ -16,6 +15,17 @@ module.exports = ({ config, $ }) => str => {
     const normal = [];
 
     for (const seg of segments) {
+        // 1️⃣ Extract @tags first
+        const tagMatches = seg.match(/@\w+/g);
+        if (tagMatches) {
+            result.f ??= {};
+            result.f.flags ??= [];
+            for (const tag of tagMatches) {
+                result.f.flags.push(tag.slice(1)); // remove @
+            }
+        }
+
+        // 2️⃣ Extract key=value pairs
         for (const match of seg.matchAll(config.keyValueExpression)) {
             const { key, val } = match.groups;
             const isOverride = key.includes(config.overrideDelimiter);
@@ -26,6 +36,7 @@ module.exports = ({ config, $ }) => str => {
         }
     }
 
+    // 3️⃣ Apply all normal and override key-values
     for (const [path, val] of [...normal, ...overrides]) {
         $.obj.set(result, path, val);
     }
