@@ -52,7 +52,7 @@ module.exports = ({ test, assert }) => ({ parse }) => {
 
     test('parsing special syntax for flags', () => {
         const struct = parse('@foo @bar');
-        assert.deepEqual(struct, { f: { flags: ['foo', 'bar'] } });
+        assert.deepEqual(struct, { attributes: ['foo', 'bar'] });
     });
 
 };

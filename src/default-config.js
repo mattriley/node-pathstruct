@@ -7,5 +7,6 @@ module.exports = {
     pathSeparator: '/',
     pathSeparatorEncoded: '>',
     forceQuotes: false,
-    nils: ['nil', 'null', '""', '']
+    nils: ['nil', 'null', '""', ''],
+    markers: { '@': 'attributes', '#': 'tags', '$': 'flags' }
 };
