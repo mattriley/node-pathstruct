@@ -1,4 +1,4 @@
-module.exports = ({ test, assert }) => ({ parse }) => {
+module.exports = ({ test, assert }) => ({ parse, parser }) => {
 
     test('parsing a string', () => {
         const struct = parse('foo=bar');
@@ -53,6 +53,12 @@ module.exports = ({ test, assert }) => ({ parse }) => {
     test('parsing special syntax for flags', () => {
         const struct = parse('@foo @bar');
         assert.deepEqual(struct, { attributes: ['foo', 'bar'] });
+    });
+
+    test('parsing special syntax for flags nested', () => {
+        const parse = parser.configure({ markers: { '@': 'f.flags' } });
+        const struct = parse('@foo @bar');
+        assert.deepEqual(struct, { f: { flags: ['foo', 'bar'] } });
     });
 
 };
