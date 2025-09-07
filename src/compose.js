@@ -6,7 +6,12 @@ const defaultConfig = require('./default-config');
 
 module.exports = ({ config } = {}) => {
 
-    const { compose } = composer(modules, { config, defaultConfig });
+    const { compose } = composer(modules, {
+        config,
+        defaultConfig,
+        configAlias: ['globalConfig']
+    });
+
     const { parser } = compose('parser', { $, _ });
     const { stringifier } = compose('stringifier', { $, _ });
 
