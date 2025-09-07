@@ -1,10 +1,10 @@
 const pathlib = require('node:path');
 const mergeWith = require('lodash.mergewith');
+const cache = {};
 
 module.exports = ({ self, $, globalConfig }) => config => {
 
     const parseOptions = $.fun.parseConfig(globalConfig, config);
-    const cache = {};
 
     return (path, ...options) => {
         options = parseOptions(options);

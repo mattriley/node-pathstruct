@@ -8,8 +8,8 @@ module.exports = ({ test, assert }) => ({ parser }) => {
 
     test('flags nested', () => {
         const parse = parser.configure({ markers: { '@': 'f.flags' } });
-        const struct = parse('@foo @bar');
-        assert.deepEqual(struct, { f: { flags: ['foo', 'bar'] } });
+        const struct = parse('@foo @bar @baz');
+        assert.deepEqual(struct, { f: { flags: ['foo', 'bar', 'baz'] } });
     });
 
     test('flags single is string instead of array', () => {

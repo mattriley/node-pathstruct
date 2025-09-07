@@ -13,6 +13,5 @@ module.exports = {
     select: null,
     aliases: {},
     pick: [],
-    initial: {},
-    cache: {}
+    initial: {}
 };
