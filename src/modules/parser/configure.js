@@ -3,7 +3,7 @@ const mergeWith = require('lodash.mergewith');
 
 module.exports = ({ self, $ }) => config => {
 
-    const defaults = { select: null, aliases: {}, pick: [], initial: {}, pathSeparator: null, initial: null, keyValueExpression: null };
+    const defaults = { select: null, aliases: {}, pick: [], initial: {}, keyValueExpression: null };
     const parseOptions = $.fun.parseConfig(defaults, config);
     const cache = {};
 

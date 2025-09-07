@@ -8,5 +8,10 @@ module.exports = {
     pathSeparatorEncoded: '>',
     forceQuotes: false,
     nils: ['nil', 'null', '""', ''],
-    markers: { '@': 'attributes', '#': 'tags', '$': 'flags' }
+    markers: { '@': 'attributes', '#': 'tags', '$': 'flags' },
+
+    select: null,
+    aliases: {},
+    pick: [],
+    initial: {}
 };
