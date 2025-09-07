@@ -23,15 +23,19 @@ module.exports = ({ $ }) => (str, options) => {
         return cur;
     }
 
-    // Push a value to an array at dot path; create/convert as needed
+    // Push a value to a dot path; first value stays string,
+    // second promotes to array, further ones push onto array.
     function pushToPath(obj, path, value) {
         const existing = getAtPath(obj, path);
-        if (Array.isArray(existing)) {
+
+        if (existing === undefined) {
+            // first value → plain string
+            $.obj.set(obj, path, value);
+        } else if (Array.isArray(existing)) {
+            // already array → just append
             existing.push(value);
-        } else if (existing === undefined) {
-            $.obj.set(obj, path, [value]);
         } else {
-            // Coerce non-array to array, preserving existing value
+            // existing is a single string → promote to array
             $.obj.set(obj, path, [existing, value]);
         }
     }
