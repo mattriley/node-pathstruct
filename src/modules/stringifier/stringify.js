@@ -12,7 +12,7 @@ module.exports = ({ self, config, $ }) => {
         const stringify = ([key, val]) => {
             if (self.isEmpty(val)) return [];
             const str = self.stringifyValue(val, opts);
-            return [key, str].join(config.keyValueSeparator);
+            return opts.keyValueHeader + [key, str].join(config.keyValueSeparator);
         };
 
         return Object.entries(flatObj)

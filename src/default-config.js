@@ -1,17 +1,23 @@
 module.exports = {
+
+    // Parser
     keyValueExpression: /(?<key>\S+)=(?<val>\[[^\]]*\]|"[^"]*"|\S*)/g,
-    keyValueSeparator: '=',
-    keyValueDelimiter: ' ',
     arrayDelimiter: ',',
     overrideDelimiter: '!',
-    pathSeparator: '/',
-    pathSeparatorEncoded: '>',
-    forceQuotes: false,
     nils: ['nil', 'null', '""', ''],
     markers: { '@': 'attributes', '#': 'tags', '$': 'flags' },
-
     select: null,
     aliases: {},
     pick: [],
-    initial: {}
+    initial: {},
+
+    // Stringifier
+    keyValueSeparator: '=',
+    keyValueDelimiter: ' ',
+    keyValueHeader: '',
+    forceQuotes: false,
+
+    // Both
+    pathSeparator: '/',
+    pathSeparatorEncoded: '>',
 };
