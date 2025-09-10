@@ -1,6 +1,5 @@
 const pathlib = require('node:path');
 const mergeWith = require('lodash.mergewith');
-const cache = {};
 
 module.exports = ({ self, $, globalConfig }) => config => {
 
@@ -17,10 +16,10 @@ module.exports = ({ self, $, globalConfig }) => config => {
         const pathWithoutExt = parsedPath.ext.includes('=') ? path : pathlib.join(parsedPath.dir, parsedPath.name);
         const mergeCustomiser = (objValue, srcValue) => { if (Array.isArray(objValue)) return [srcValue].flat(); };
 
-        cache[path] ??= self.baseParse(pathWithoutExt, options);
+        options.cache[path] ??= self.baseParse(pathWithoutExt, options);
 
         return $.pipe([
-            () => cache[path],
+            () => options.cache[path],
             obj => options.select ? $.obj.dig(obj, options.select, {}) : obj,
             obj => $.obj.isPlain(obj) ? mergeWith({}, options.initial, obj, mergeCustomiser) : obj,
             obj => $.obj.isPlain(obj) ? self.applyAliases(obj, aliasLookup) : obj,

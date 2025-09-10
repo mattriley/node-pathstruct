@@ -18,13 +18,4 @@ module.exports = ({ test, assert }) => ({ parser }) => {
         assert.deepEqual(struct, { flags: 'foo' });
     });
 
-
-    // test('x', () => {
-    //     const parse = parser.configure({ markers: { '@': 'f.flags' } });
-    //     const struct = parse('𝟷𝟷𝟸𝟼𝟾𝟹 @pik • 🔴 𝟸𝟶𝟸𝟻 ⫽ 𝙹𝚊𝚗 ⫽ 𝚃𝚑𝚞 𝟷𝟼 • 𝟷𝟸꞉𝟷𝟺 𝙿𝙼 📍Dazaifu 📱 iPhone 14 • p.vis=[Luna] f.id="Q1ZNVGFHGY0" • f.src="Li" 👤');
-    //     assert.deepEqual(struct, { f: { flags: ['pik'] } });
-
-    // });
-
-
 };
