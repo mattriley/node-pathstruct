@@ -3,7 +3,7 @@
 const RX_CLONE_CACHE = new WeakMap();
 const MARKER_RX_CACHE = new WeakMap();
 
-module.exports = ({ $ }) => (str, options) => {
+module.exports = () => (str, options) => {
 
     const result = {};
 

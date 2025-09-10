@@ -16,10 +16,8 @@ module.exports = ({ self, $, globalConfig }) => config => {
         const pathWithoutExt = parsedPath.ext.includes('=') ? path : pathlib.join(parsedPath.dir, parsedPath.name);
         const mergeCustomiser = (objValue, srcValue) => { if (Array.isArray(objValue)) return [srcValue].flat(); };
 
-        options.cache[path] ??= self.baseParse(pathWithoutExt, options);
-
         return $.pipe([
-            () => options.cache[path],
+            () => self.baseParse(pathWithoutExt, options),
             obj => options.select ? $.obj.dig(obj, options.select, {}) : obj,
             obj => $.obj.isPlain(obj) ? mergeWith({}, options.initial, obj, mergeCustomiser) : obj,
             obj => $.obj.isPlain(obj) ? self.applyAliases(obj, aliasLookup) : obj,
