@@ -69,8 +69,13 @@ module.exports = () => (str, options) => {
         for (let i = 0; i < lastIdx; i++) {
             const k = parts[i];
             const v = cur[k];
-            if (v == null || typeof v !== 'object' || Array.isArray(v)) {
+            if (v == null) {
                 cur[k] = {};
+            } else if (typeof v !== 'object' || Array.isArray(v)) {
+                // promote scalars/arrays to an object and preserve the original value
+                // under the `.value` key so nested assignments like `x.foo=...`
+                // become `{ value: <original>, foo: ... }`
+                cur[k] = { value: v };
             }
             cur = cur[k];
         }

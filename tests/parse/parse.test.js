@@ -50,4 +50,9 @@ module.exports = ({ test, assert }) => ({ parse, parser }) => {
         assert.deepEqual(struct, { x: { foo: ['bar', 'baz'] } });
     });
 
+    test('scalar to nested', () => {
+        const struct = parse('x="abc" x.foo=bar');
+        assert.deepEqual(struct, { x: { value: 'abc', foo: 'bar' } });
+    });
+
 };
