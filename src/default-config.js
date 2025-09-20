@@ -19,5 +19,5 @@ module.exports = {
 
     // Both
     pathSeparator: '/',
-    pathSeparatorEncoded: '>',
+    pathSeparatorEncoded: '>'
 };

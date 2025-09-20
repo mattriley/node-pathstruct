@@ -19,7 +19,7 @@ module.exports = () => (str, options) => {
         if (!re) {
             return null;
         }
-        let cached = RX_CLONE_CACHE.get(re);
+        const cached = RX_CLONE_CACHE.get(re);
         if (cached) {
             return cached;
         }

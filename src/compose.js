@@ -17,6 +17,6 @@ module.exports = ({ config } = {}) => {
 
     const { parse } = parser;
     const { stringify } = stringifier;
-    return { parse, stringify, ...compose.modules }
+    return { parse, stringify, ...compose.modules };
 
 };

@@ -1,4 +1,4 @@
-module.exports = ({ test, assert }) => ({ parse, parser }) => {
+module.exports = ({ test, assert }) => ({ parse }) => {
 
     test('parsing a string', () => {
         const struct = parse('foo=bar');
