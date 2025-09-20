@@ -8,7 +8,7 @@ module.exports = ({ self, config, $ }) => val => {
     if (val === null) return null;
 
     const str = val.toString();
-    if ($.bool.isLiteralBoolean(str)) return $.bool.toBooleanFromLiteral(str);
+    if ($.bool.isLiteralBoolean(str)) return $.bool.parseLiteralBoolean(str);
 
     const replaced = str.replace(config.pathSeparatorEncoded, config.pathSeparator);
     return $.str.dequote(replaced, '"');

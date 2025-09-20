@@ -1,6 +1,6 @@
 module.exports = ({ self, config, $ }) => {
 
-    const flat = $.obj.configure.flat({ delimiter: '.', mutate: false });
+    const flat = $.obj.flat.configure({ delimiter: '.', mutate: false });
 
     return (obj, options = {}) => {
 
