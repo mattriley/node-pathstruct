@@ -2,10 +2,9 @@ const pathlib = require('node:path');
 const mergeWith = require('lodash.mergewith');
 
 module.exports = ({ self, $, globalConfig }) => config => {
-
     const parseOptions = $.fun.parseConfig(globalConfig, config);
 
-    return (path, ...options) => {
+    return (path, options) => {
         options = parseOptions(options);
 
         const aliasLookup = Object.fromEntries(Object.entries(options.aliases).flatMap(([key, aliases]) => {

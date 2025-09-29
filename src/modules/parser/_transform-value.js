@@ -11,6 +11,6 @@ module.exports = ({ self, config, $ }) => val => {
     if ($.bool.isLiteralBoolean(str)) return $.bool.parseLiteralBoolean(str);
 
     const replaced = str.replace(config.pathSeparatorEncoded, config.pathSeparator);
-    return $.str.dequote(replaced, '"');
+    return $.str.dequote(replaced, { delimiter: '"' });
 
 };
