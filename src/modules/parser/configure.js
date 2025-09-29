@@ -1,8 +1,8 @@
 const pathlib = require('node:path');
 const mergeWith = require('lodash.mergewith');
 
-module.exports = ({ self, $, globalConfig }) => config => {
-    const parseOptions = $.fun.parseConfig(globalConfig, config);
+module.exports = ({ self, $, defaults }) => config => {
+    const parseOptions = $.fun.parseConfig(defaults, config);
 
     return (path, options) => {
         options = parseOptions(options);
@@ -12,7 +12,7 @@ module.exports = ({ self, $, globalConfig }) => config => {
         }));
 
         const parsedPath = pathlib.parse(path);
-        const pathWithoutExt = parsedPath.ext.includes('=') ? path : pathlib.join(parsedPath.dir, parsedPath.name);
+        const pathWithoutExt = parsedPath.ext.includes(options.keyValueSeparator) ? path : pathlib.join(parsedPath.dir, parsedPath.name);
         const mergeCustomiser = (objValue, srcValue) => { if (Array.isArray(objValue)) return [srcValue].flat(); };
 
         return $.pipe([

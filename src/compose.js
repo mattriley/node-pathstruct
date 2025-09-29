@@ -9,7 +9,7 @@ module.exports = ({ config } = {}) => {
     const { compose } = composer(modules, {
         config,
         defaultConfig,
-        configAlias: ['globalConfig']
+        configAlias: ['defaults']
     });
 
     const { parser } = compose('parser', { $, _ });
