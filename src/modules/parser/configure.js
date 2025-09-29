@@ -16,7 +16,7 @@ module.exports = ({ self, $, defaults }) => config => {
         const mergeCustomiser = (objValue, srcValue) => { if (Array.isArray(objValue)) return [srcValue].flat(); };
 
         return $.pipe([
-            () => self.baseParse(pathWithoutExt, options) || {},
+            () => self.baseParse(pathWithoutExt, options),
             obj => options.select ? $.obj.dig(obj, options.select, {}) : obj,
             obj => $.obj.isPlain(obj) ? mergeWith({}, options.initial, obj, mergeCustomiser) : obj,
             obj => $.obj.isPlain(obj) ? self.applyAliases(obj, aliasLookup) : obj,

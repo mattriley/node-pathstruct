@@ -4,7 +4,7 @@ const operations = {
 };
 
 module.exports = () => obj => {
-    for (const [key, val] of Object.entries(obj)) {
+    for (const [key, val] of Object.entries(obj || {})) {
         const operator = key.slice(-1);
         const cleanKey = key.slice(0, -1);
         const operation = operations[operator];
