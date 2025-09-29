@@ -1,17 +1,13 @@
 module.exports = () => (obj, aliasLookup) => {
-    const getOperator = key => {
-        if (key.endsWith('+')) return '+';
-        if (key.endsWith('-')) return '-';
-        return '';
-    };
-
     const result = {};
+    const suffixOps = { '+': true, '-': true };
 
     for (const [key, val] of Object.entries(obj)) {
-        const operator = getOperator(key);
-        const cleanKey = operator ? key.slice(0, -1) : key;
+        const lastChar = key[key.length - 1];
+        const hasOp = suffixOps[lastChar];
+        const cleanKey = hasOp ? key.slice(0, -1) : key;
         const preferredKey = aliasLookup[cleanKey] ?? cleanKey;
-        result[preferredKey + operator] = val;
+        result[hasOp ? preferredKey + lastChar : preferredKey] = val;
     }
 
     return result;
