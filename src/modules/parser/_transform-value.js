@@ -1,5 +1,3 @@
-// Optimised on 21 June 2025 with help from ChatGPT.
-
 module.exports = ({ self, config, $ }) => val => {
 
     if ($.obj.isPlain(val)) return self.transformObject(val);

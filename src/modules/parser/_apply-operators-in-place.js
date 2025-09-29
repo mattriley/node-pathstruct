@@ -1,5 +1,3 @@
-// Optimised on 21 June 2025 with help from ChatGPT.
-
 const operations = {
     '+': (target, val) => [target].flat().concat(val),
     '-': (target, val) => target.filter(s => !val.includes(s))
