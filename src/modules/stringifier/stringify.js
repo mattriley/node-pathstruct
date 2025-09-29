@@ -1,23 +1,18 @@
 module.exports = ({ self, config, $ }) => {
-
+    const parseOptions = $.fun.parseConfig(config);
     const flat = $.obj.flat.configure({ delimiter: '.', mutate: false });
 
-    return (obj, options = {}) => {
-
-        const defaultOptions = { ...config, pick: Object.keys(obj) };
-        const opts = { ...defaultOptions, ...options };
-        const target = $.obj.pick(obj, opts.pick);
+    return (obj, options) => {
+        options = parseOptions({ pick: Object.keys(obj), ...options });
+        const target = $.obj.pick(obj, options.pick);
         const flatObj = flat(target);
 
         const stringify = ([key, val]) => {
             if (self.isEmpty(val)) return [];
-            const str = self.stringifyValue(val, opts);
-            return opts.keyValueHeader + [key, str].join(config.keyValueSeparator);
+            const str = self.stringifyValue(val, options);
+            return options.keyValueHeader + [key, str].join(config.keyValueSeparator);
         };
 
-        return Object.entries(flatObj)
-            .flatMap(stringify)
-            .join(opts.keyValueDelimiter);
-
+        return Object.entries(flatObj).flatMap(stringify).join(options.keyValueDelimiter);
     };
 };
