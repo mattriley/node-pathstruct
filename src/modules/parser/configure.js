@@ -24,7 +24,7 @@ module.exports = ({ self, $, defaults }) => config => {
             obj => self.validatePick(obj, options),
             obj => options.pick.length ? $.obj.pick(obj, options.pick) : obj,
             obj => self.transformValue(obj)
-        ])();
+        ]);
 
     };
 };
