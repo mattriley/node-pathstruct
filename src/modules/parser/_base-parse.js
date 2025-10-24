@@ -16,13 +16,9 @@ module.exports = () => (str, options) => {
     // Ensure we have a mutable, global regex even if the original is frozen
     // Also cache clones to avoid re-compilation across calls.
     function toMutableGlobal(re) {
-        if (!re) {
-            return null;
-        }
+        if (!re) return null;
         const cached = RX_CLONE_CACHE.get(re);
-        if (cached) {
-            return cached;
-        }
+        if (cached) return cached;
         const flags = re.flags.includes('g') ? re.flags : re.flags + 'g';
         const clone = new RegExp(re.source, flags);
         RX_CLONE_CACHE.set(re, clone);
@@ -39,9 +35,7 @@ module.exports = () => (str, options) => {
             return null;
         }
         const inner = val.slice(1, -1).trim();
-        if (!inner) {
-            return [];
-        }
+        if (!inner) return [];
         // Using split on a string (not regex) is fast in V8
         const parts = inner.split(arrayDelimiter);
         for (let i = 0; i < parts.length; i++) {
@@ -60,9 +54,7 @@ module.exports = () => (str, options) => {
     const parentCache = new Map();
     function ensureParentCached(path) {
         let entry = parentCache.get(path);
-        if (entry) {
-            return entry;
-        }
+        if (entry) return entry;
         const parts = path.split('.');
         const lastIdx = parts.length - 1;
         let cur = result;
@@ -96,8 +88,27 @@ module.exports = () => (str, options) => {
         }
     }
 
+    function isPlainObject(o) {
+        return o !== null && typeof o === 'object' && !Array.isArray(o);
+    }
+
     function fastSet(path, val) {
         const { parent, key } = ensureParentCached(path);
+        const cur = parent[key];
+
+        if (cur === undefined) {
+            parent[key] = val; // first write
+            return;
+        }
+
+        // If assigning scalar/array onto an existing object (e.g., after x.foo=... then x=...),
+        // keep the object and stash the scalar into `.value` to avoid clobbering nested keys.
+        if (isPlainObject(cur) && (typeof val !== 'object' || Array.isArray(val))) {
+            cur.value = val; // in-place
+            return;
+        }
+
+        // Fallback: overwrite (object on scalar, object on object, etc.)
         parent[key] = val;
     }
 
@@ -140,9 +151,7 @@ module.exports = () => (str, options) => {
                 const prefix = m[1];
                 const word = m[2];
                 const target = markers[prefix];
-                if (target) {
-                    pushPromote(target, word);
-                }
+                if (target) pushPromote(target, word);
             }
         }
 

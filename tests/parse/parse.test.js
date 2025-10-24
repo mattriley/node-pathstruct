@@ -55,4 +55,9 @@ module.exports = ({ test, assert }) => ({ parse }) => {
         assert.deepEqual(struct, { x: { value: 'abc', foo: 'bar' } });
     });
 
+    test('scalar to nested subdirectory', () => {
+        const struct = parse('x.foo=bar/x=abc');
+        assert.deepEqual(struct, { x: { value: 'abc', foo: 'bar' } });
+    });
+
 };
