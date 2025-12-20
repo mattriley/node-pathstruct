@@ -20,6 +20,11 @@ module.exports = ({ test, assert }) => ({ stringify }) => {
         assert.deepEqual(path, 'foo="bar bar"');
     });
 
+    test('stringify a value with a semicolon using quotes', () => {
+        const path = stringify({ foo: 'bar;bar' });
+        assert.deepEqual(path, 'foo="bar;bar"');
+    });
+
     test('stringify a value with a space using terminator', () => {
         const path = stringify({ foo: 'bar bar' });
         assert.deepEqual(path, 'foo=bar bar;');
