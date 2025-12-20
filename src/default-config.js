@@ -10,6 +10,7 @@ module.exports = {
     aliases: {},
     pick: [],
     initial: {},
+    valueTerminator: ';',
 
     // Stringifier
     keyValueSeparator: '=',

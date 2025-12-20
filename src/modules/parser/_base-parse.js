@@ -12,6 +12,7 @@ module.exports = () => (str, options) => {
     const pathSeparator = options.pathSeparator;
     const overrideDelimiter = options.overrideDelimiter;
     const arrayDelimiter = options.arrayDelimiter;
+    const valueTerminator = options.valueTerminator; // e.g. ';' (optional)
 
     // Ensure we have a mutable, global regex even if the original is frozen
     // Also cache clones to avoid re-compilation across calls.
@@ -135,6 +136,121 @@ module.exports = () => (str, options) => {
         MARKER_RX_CACHE.set(markers, markerRx);
     }
 
+    // ── semicolon-terminated value rewrite ────────────────────────────────────
+    // Converts: key=foo bar;  -> key="foo bar"
+    // Leaves existing grammar (append/remove/force, arrays, etc.) to keyValueExpression.
+    function skipSpacesForward(s, i, len) {
+        while (i < len && s.charCodeAt(i) <= 32) { i++; }
+        return i;
+    }
+
+    function findNextKeyEquals(seg, from) {
+        // Find next " <something>=" boundary. We keep this intentionally permissive
+        // because the real grammar lives in keyValueExpression.
+        const len = seg.length;
+        let i = from;
+
+        while (i < len) {
+            // find next space boundary then non-space
+            while (i < len && seg.charCodeAt(i) > 32) { i++; }
+            i = skipSpacesForward(seg, i, len);
+            if (i >= len) return -1;
+
+            // accept any run of non-space as "key-ish" then '='
+            const keyStart = i;
+            while (i < len && seg.charCodeAt(i) > 32 && seg.charCodeAt(i) !== 61) { i++; }
+            if (i > keyStart && i < len && seg.charCodeAt(i) === 61) {
+                return keyStart;
+            }
+
+            i = keyStart + 1;
+        }
+
+        return -1;
+    }
+
+    function rewriteTerminatedValues(seg) {
+        if (!valueTerminator) return seg;
+
+        const term = valueTerminator;
+        const termCode = term.charCodeAt(0);
+
+        // Fast reject
+        const firstTerm = seg.indexOf(term);
+        if (firstTerm === -1) return seg;
+
+        const len = seg.length;
+        let out = null; // lazily allocate
+        let last = 0;
+        let i = 0;
+
+        while (i < len) {
+            const eq = seg.indexOf('=', i);
+            if (eq === -1) break;
+
+            // value begins after '=' and optional spaces
+            let vStart = skipSpacesForward(seg, eq + 1, len);
+            if (vStart >= len) break;
+
+            const first = seg.charCodeAt(vStart);
+
+            // If quoted or array literal, do nothing (existing grammar already supports)
+            if (first === 34 || first === 39 || first === 91) { // " ' [
+                i = vStart + 1;
+                continue;
+            }
+
+            // Find a terminator and ensure it belongs to this value (before next key=)
+            const termIdx = seg.indexOf(term, vStart);
+            if (termIdx === -1) break;
+
+            const nextKeyIdx = findNextKeyEquals(seg, vStart);
+            if (nextKeyIdx !== -1 && termIdx > nextKeyIdx) {
+                // terminator belongs to some later value, not this one
+                i = eq + 1;
+                continue;
+            }
+
+            // Only worth rewriting if the would-be value contains whitespace
+            // (otherwise key=foo; is arguably just key=foo + delimiter)
+            let hasSpace = false;
+            for (let k = vStart; k < termIdx; k++) {
+                if (seg.charCodeAt(k) <= 32) { hasSpace = true; break; }
+            }
+            if (!hasSpace) {
+                i = termIdx + 1;
+                continue;
+            }
+
+            // Lazily create output buffer
+            if (!out) out = [];
+
+            // Emit everything up to the start of the value
+            if (last < vStart) out.push(seg.slice(last, vStart));
+
+            // Emit quoted value, escaping any double quotes inside (rare, but safe)
+            // (we keep the inner value as-is, including spaces)
+            const rawVal = seg.slice(vStart, termIdx);
+            const escaped = rawVal.indexOf('"') === -1 ? rawVal : rawVal.replace(/"/g, '\\"');
+            out.push('"', escaped, '"');
+
+            // Skip the terminator (but keep any following whitespace as-is)
+            last = termIdx + 1;
+            i = last;
+
+            // If the terminator was acting as the delimiter between pairs and there is no whitespace,
+            // inject a single space so the downstream regex can still find the next token.
+            if (last < len && seg.charCodeAt(last) > 32) {
+                out.push(' ');
+            }
+        }
+
+        if (!out) return seg;
+
+        if (last < len) out.push(seg.slice(last));
+        return out.join('');
+    }
+
     // ── main pass ─────────────────────────────────────────────────────────────
     const segments = str.split(pathSeparator);
     const overrides = [];
@@ -157,9 +273,11 @@ module.exports = () => (str, options) => {
 
         // 2) key=value pairs (use exec loop instead of matchAll)
         if (keyValueExpression) {
+            const rewritten = valueTerminator ? rewriteTerminatedValues(seg) : seg;
+
             keyValueExpression.lastIndex = 0;
             let km;
-            while ((km = keyValueExpression.exec(seg)) !== null) {
+            while ((km = keyValueExpression.exec(rewritten)) !== null) {
                 // rely on named groups; if absent, adjust to indices
                 const g = km.groups || {};
                 const rawKey = g.key;
