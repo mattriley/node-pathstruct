@@ -12,8 +12,20 @@ module.exports = ({ self, config, $ }) => (val, options = {}) => {
         str = str.replace(config.pathSeparator, config.pathSeparatorEncoded);
     }
 
-    const shouldQuote = opts.forceQuotes || (opts.quoteSpaces && str.includes(' ')) || $.bool.isLiteralBoolean(val);
+    const isBoolLiteral = $.bool.isLiteralBoolean(val);
 
-    return shouldQuote ? `"${str}"` : str;
+    // If it's a literal boolean and not forcing quotes, quote it so it stays a string on parse.
+    if (isBoolLiteral && !opts.forceQuotes) {
+        return `"${str}"`;
+    }
+
+    // If it contains spaces and we're not forcing quotes, terminate instead: key=foo bar;
+    // (Assumes the caller appends key= and parsing supports valueTerminator.)
+    if (!opts.forceQuotes && opts.quoteSpaces && str.includes(' ')) {
+        return `${str}${config.valueTerminator || ';'}`;
+    }
+
+    // Otherwise: quote if forced, else plain
+    return opts.forceQuotes ? `"${str}"` : str;
 
 };

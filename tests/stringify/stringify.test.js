@@ -15,9 +15,14 @@ module.exports = ({ test, assert }) => ({ stringify }) => {
         assert.deepEqual(path, 'foo=bar • baz=qux');
     });
 
-    test('stringify a value with a space', () => {
-        const path = stringify({ foo: 'bar bar' });
+    test('stringify a value with a space using quotes', () => {
+        const path = stringify({ foo: 'bar bar' }, { forceQuotes: true });
         assert.deepEqual(path, 'foo="bar bar"');
+    });
+
+    test('stringify a value with a space using terminator', () => {
+        const path = stringify({ foo: 'bar bar' });
+        assert.deepEqual(path, 'foo=bar bar;');
     });
 
     test('stringify a value without a space but force quotes', () => {

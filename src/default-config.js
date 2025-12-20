@@ -10,7 +10,6 @@ module.exports = {
     aliases: {},
     pick: [],
     initial: {},
-    valueTerminator: ';',
 
     // Stringifier
     keyValueSeparator: '=',
@@ -19,6 +18,8 @@ module.exports = {
     forceQuotes: false,
 
     // Both
+    valueTerminator: ';',
     pathSeparator: '/',
-    pathSeparatorEncoded: '>'
+    pathSeparatorEncoded: '>',
+
 };
