@@ -1,19 +1,18 @@
 module.exports = ({ test, assert }) => ({ parse }) => {
 
-    test('parsing quoted string with spaces including semicolon', () => {
-        const struct = parse('foo="bar;bar"');
-        assert.deepEqual(struct, { foo: 'bar;bar' });
-    });
-
-    test('parsing terminated string without spaces', () => {
+    test('parsing terminated string', () => {
         const struct = parse('foo=bar;');
         assert.deepEqual(struct, { foo: 'bar' });
     });
 
-    test('parsing terminated string with spaces', () => {
+    test('parsing terminated string containing space', () => {
         const struct = parse('foo=bar bar;');
         assert.deepEqual(struct, { foo: 'bar bar' });
     });
 
+    test('parsing quoted string with spaces containing terminator', () => {
+        const struct = parse('foo="bar;bar"');
+        assert.deepEqual(struct, { foo: 'bar;bar' });
+    });
 
 };
