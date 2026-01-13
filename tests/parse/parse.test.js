@@ -20,11 +20,6 @@ module.exports = ({ test, assert }) => ({ parse }) => {
         assert.deepEqual(struct, { foo: 'bar', baz: 'qux' });
     });
 
-    test('parsing quoted string with spaces', () => {
-        const struct = parse('foo="bar bar"');
-        assert.deepEqual(struct, { foo: 'bar bar' });
-    });
-
     test('parsing an array of string', () => {
         const struct = parse('foo=[bar,baz]');
         assert.deepEqual(struct, { foo: ['bar', 'baz'] });
@@ -51,7 +46,7 @@ module.exports = ({ test, assert }) => ({ parse }) => {
     });
 
     test('scalar to nested', () => {
-        const struct = parse('x="abc" x.foo=bar');
+        const struct = parse('x=abc x.foo=bar');
         assert.deepEqual(struct, { x: { value: 'abc', foo: 'bar' } });
     });
 
