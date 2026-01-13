@@ -138,6 +138,7 @@ module.exports = () => (str, options) => {
 
     // ── semicolon-terminated value rewrite ────────────────────────────────────
     // Converts: key=foo bar;  -> key="foo bar"
+    // Also converts: key=bar; -> key=bar   (drops terminator)
     // Leaves existing grammar (append/remove/force, arrays, etc.) to keyValueExpression.
     function skipSpacesForward(s, i, len) {
         while (i < len && s.charCodeAt(i) <= 32) { i++; }
@@ -173,7 +174,6 @@ module.exports = () => (str, options) => {
         if (!valueTerminator) return seg;
 
         const term = valueTerminator;
-        const termCode = term.charCodeAt(0);
 
         // Fast reject
         const firstTerm = seg.indexOf(term);
@@ -211,28 +211,28 @@ module.exports = () => (str, options) => {
                 continue;
             }
 
-            // Only worth rewriting if the would-be value contains whitespace
-            // (otherwise key=foo; is arguably just key=foo + delimiter)
+            // Determine whether the would-be value contains whitespace
             let hasSpace = false;
             for (let k = vStart; k < termIdx; k++) {
                 if (seg.charCodeAt(k) <= 32) { hasSpace = true; break; }
             }
-            if (!hasSpace) {
-                i = termIdx + 1;
-                continue;
-            }
 
-            // Lazily create output buffer
+            // We are rewriting (at least removing the terminator), so allocate output buffer
             if (!out) out = [];
 
-            // Emit everything up to the start of the value
-            if (last < vStart) out.push(seg.slice(last, vStart));
+            if (hasSpace) {
+                // Emit everything up to the start of the value
+                if (last < vStart) out.push(seg.slice(last, vStart));
 
-            // Emit quoted value, escaping any double quotes inside (rare, but safe)
-            // (we keep the inner value as-is, including spaces)
-            const rawVal = seg.slice(vStart, termIdx);
-            const escaped = rawVal.indexOf('"') === -1 ? rawVal : rawVal.replace(/"/g, '\\"');
-            out.push('"', escaped, '"');
+                // Emit quoted value, escaping any double quotes inside (rare, but safe)
+                // (we keep the inner value as-is, including spaces)
+                const rawVal = seg.slice(vStart, termIdx);
+                const escaped = rawVal.indexOf('"') === -1 ? rawVal : rawVal.replace(/"/g, '\\"');
+                out.push('"', escaped, '"');
+            } else {
+                // No spaces: keep the original value as-is, just drop the terminator
+                if (last < termIdx) out.push(seg.slice(last, termIdx));
+            }
 
             // Skip the terminator (but keep any following whitespace as-is)
             last = termIdx + 1;
