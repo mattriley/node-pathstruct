@@ -9,6 +9,7 @@ module.exports = {
     select: null,
     aliases: {},
     pick: [],
+    omit: [],
     initial: {},
 
     // Stringifier

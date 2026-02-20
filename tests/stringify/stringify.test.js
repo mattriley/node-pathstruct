@@ -75,4 +75,9 @@ module.exports = ({ test, assert }) => ({ stringify }) => {
         assert.deepEqual(path, '');
     });
 
+    test('option to omit keys', () => {
+        const path = stringify({ foo: 'bar', baz: 'qux' }, { omit: ['foo'] });
+        assert.deepEqual(path, 'baz=qux');
+    });
+
 };

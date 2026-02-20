@@ -4,7 +4,9 @@ module.exports = ({ self, config, $ }) => {
 
     return (obj, options) => {
         options = parseOptions({ pick: Object.keys(obj), ...options });
-        const target = $.obj.pick(obj, options.pick);
+        let target = $.obj.pick(obj, options.pick);
+        target = $.obj.omit(target, options.omit);
+
         const flatObj = flat(target);
 
         const stringify = ([key, val]) => {
